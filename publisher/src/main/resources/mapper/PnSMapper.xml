@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackjade.publisher.dao.PnSDao">
+
+	<insert id="insertPnS" parameterType="com.blackjade.publisher.domain.PnSRow"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO pns.pns
+		(TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET)
+		values
+		(#{time},#{oid},#{pnsid},#{pnsgid},#{poid},#{side},#{price},#{quant},#{status},#{traded},#{margin},#{net})
+	</insert>
+	
+	<!-- for update -->
+	<select id="selectPnSRowOid" parameterType="String"
+		resultType="com.blackjade.publisher.domain.PnSRow">
+		SELECT TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET FROM
+		pns.pns a where a.OID=#{oid} for update
+	</select> 
+	
+	
+	
+<!-- 	<update> -->
+<!-- 	</update> -->
+
+</mapper>
