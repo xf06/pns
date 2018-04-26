@@ -19,6 +19,8 @@ public class CPublishAns {
 	private long max;
 	private PublishStatus status;
 	
+	public CPublishAns() {}
+	
 	public CPublishAns(UUID requestid) {
 		this.messageid = "7002";
 		this.requestid = requestid;

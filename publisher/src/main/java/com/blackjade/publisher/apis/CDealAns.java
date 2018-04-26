@@ -12,11 +12,15 @@ public class CDealAns {
 	private int clientid;
 	private UUID oid;
 	private char side;
+	private UUID pnsoid; // pns order id
+	private int poid; // product owner id
 	private int pnsid;
 	private int pnsgid;
 	private long price;
 	private int quant;
 	private DealStatus status;
+
+	public CDealAns() {}
 	
 	public CDealAns(UUID requestid) {
 		this.messageid = "7004";
@@ -61,6 +65,22 @@ public class CDealAns {
 
 	public void setSide(char side) {
 		this.side = side;
+	}
+		
+	public UUID getPnsoid() {
+		return pnsoid;
+	}
+
+	public void setPnsoid(UUID pnsoid) {
+		this.pnsoid = pnsoid;
+	}
+
+	public int getPoid() {
+		return poid;
+	}
+
+	public void setPoid(int poid) {
+		this.poid = poid;
 	}
 
 	public int getPnsid() {

@@ -19,6 +19,8 @@ public class CPayConfirmAns {
 	private int quant;
 	private PayConfirmStatus status;
 
+	public CPayConfirmAns() {}
+	
 	public CPayConfirmAns(UUID requestid) {
 		this.messageid = "7008";
 		this.requestid = requestid;

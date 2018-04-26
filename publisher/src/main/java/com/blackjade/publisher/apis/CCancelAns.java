@@ -18,6 +18,8 @@ public class CCancelAns {
 	private int quant;
 	private CancelStatus status;
 
+	public CCancelAns() {}
+	
 	public CCancelAns(UUID requestid) {
 		this.messageid = "700F";
 		this.requestid = requestid;

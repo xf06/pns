@@ -19,6 +19,8 @@ public class CPaidAns {
 	private int quant;
 	private PaidStatus status;
 	
+	public CPaidAns() {}
+	
 	public CPaidAns(UUID requestid) {
 		this.requestid = requestid;
 	}
