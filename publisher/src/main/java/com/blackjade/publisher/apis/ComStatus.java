@@ -2,47 +2,77 @@ package com.blackjade.publisher.apis;
 
 public class ComStatus {
 	
+	public static enum OrderStatus{
+		DEALING,
+		PAID,
+		PAYCONFIRM,
+		CANCELLED,
+		DONE,
+		REJECT_LOCK,
+		REJECT_DONE,
+		ERROR,
+		UNKNOWN
+	}
+		
 	public static enum PnSStatus{
 		PUBLISHED,		//0
 		HALF_TRADED,	//0
+		//HALF_LOCKED,	//0
 		FULL_LOCKED,	//0
 		FULL_TRADED,	//final
 		CANCELLED,		//final
 		HALF_CANCELLED,	//final
 		UNKNOWN			//final
 	}
-	
-	
+		
 	public static enum PublishStatus {
 		SUCCESS, 
 		WRONG_MSGID,
-		DATABASE_ERR
+		DATABASE_ERR,
+		UNKNOWN
 	}
 	
 	public static enum DealStatus {
 		SUCCESS, 
 		WRONG_MSGID,
+		DATABASE_ERR,
+		IN_QUANT_ERR,
 		PNS_MISS_MATCH,
 		PNS_DATA_MESS,
 		PNS_STATUS_MESS,
 		PNS_STATUS_FINAL,
-		PNS_STATUS_LOCKED
-
+		PNS_STATUS_LOCKED,
+		PNS_NET_NOT_ENOUGH,		
+		UNKNOWN
 	}
 	
 	public static enum PaidStatus {
 		SUCCESS, 
-		WRONG_MSGID
+		WRONG_MSGID,
+		DATABASE_ERR,
+		IN_QUANT_ERR,
+		ORD_MISS_MATCH,
+		ORD_DATA_MESS,
+		ORD_STATUS_MESS,
+		ORD_STATUS_FINAL,
+		ORD_STATUS_LOCKED,
+		ORD_STATUS_PAID_ALREADY,
+		ORD_STATUS_PAYCONFIRM,
+		UNKNOWN
 	}
 	
 	public static enum PayConfirmStatus {
 		SUCCESS, 
-		WRONG_MSGID
+		WRONG_MSGID,
+		PC_DATABASE_ERR,
+		PC_DB_MISS_MATCH,
+		UNKNOWN
 	}
 	
 	public static enum CancelStatus {
 		SUCCESS, 
-		WRONG_MSGID
+		WRONG_MSGID,
+		UNKNOWN
 	}
 		
 }

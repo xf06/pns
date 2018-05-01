@@ -13,16 +13,20 @@ public class CPaidAns {
 	private int clientid;
 	private UUID oid;
 	private char side;
+	private UUID pnsoid;
 	private int pnsid;
 	private int pnsgid;
 	private long price;
 	private int quant;
 	private PaidStatus status;
 	
-	public CPaidAns() {}
+	public CPaidAns() {
+		this.messageid ="7006";
+	}
 	
 	public CPaidAns(UUID requestid) {
 		this.requestid = requestid;
+		this.messageid ="7006";
 	}
 
 	public String getMessageid() {
@@ -63,6 +67,14 @@ public class CPaidAns {
 
 	public void setSide(char side) {
 		this.side = side;
+	}
+	
+	public UUID getPnsoid() {
+		return pnsoid;
+	}
+
+	public void setPnsoid(UUID pnsoid) {
+		this.pnsoid = pnsoid;
 	}
 
 	public int getPnsid() {

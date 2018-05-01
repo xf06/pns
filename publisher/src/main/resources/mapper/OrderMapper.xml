@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blackjade.publisher.dao.OrderDao">
-	
+
 	<insert id="insertTest">
 		INSERT INTO pns.orders (TIMESTAMP)VALUE
 		(#{timestamp})
 	</insert>
 	<insert id="insertOrder" parameterType="com.blackjade.publisher.domain.OrderRow">
 		INSERT INTO pns.orders
-		(TIMESTAMP,OID,CID,TYPE,SIDE,PNSOID,POID,PNSID,PNSGID,PRICE,QUANT,MIN,MAX,FORM)
+		(TIMESTAMP,OID,CID,TYPE,SIDE,PNSOID,POID,PNSID,PNSGID,PRICE,QUANT,FORM,STATUS)
 		VALUE
-		(#{timestamp},#{oid},#{cid},#{type},#{side},#{pnsoid},#{poid},#{pnsid},#{pnsgid},#{price},#{quant},#{min},#{max},#{form})
+		(#{timestamp},#{oid},#{cid},#{type},#{side},#{pnsoid},#{poid},#{pnsid},#{pnsgid},#{price},#{quant},#{form},#{status})
 	</insert>
-	
+
+	<select id="selectOrder" parameterType="String" resultType="com.blackjade.publisher.domain.OrderRow">
+		SELECT FROM pns.orders a WHERE a.OID=#{oid} FOR UPDATE
+	</select>
+
+	<update id="updateOrderStatus">
+		UPDATE pns.orders a SET a.STATUS=#{status}, WHERE a.OID=#{oid}
+	</update>
+
 </mapper>
 

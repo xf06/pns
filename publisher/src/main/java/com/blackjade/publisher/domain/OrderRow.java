@@ -17,10 +17,9 @@ public class OrderRow {
 	private long pnsgid;
 	private long price;
 	private long quant;
-	private long min;
-	private long max;
 	private String form;
-
+	private String status;
+	
 	public long getTimestamp() {
 		return timestamp;
 	}
@@ -109,28 +108,20 @@ public class OrderRow {
 		this.quant = quant;
 	}
 
-	public long getMin() {
-		return min;
-	}
-
-	public void setMin(long min) {
-		this.min = min;
-	}
-
-	public long getMax() {
-		return max;
-	}
-
-	public void setMax(long max) {
-		this.max = max;
-	}
-
 	public String getForm() {
 		return form;
 	}
 
 	public void setForm(String form) {
 		this.form = form;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

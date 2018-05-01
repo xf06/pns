@@ -23,6 +23,10 @@ public class CDeal {
 	}
 
 	public DealStatus reviewData() {
+		
+		if(this.quant<=0)
+			return ComStatus.DealStatus.IN_QUANT_ERR;
+		
 		return ComStatus.DealStatus.SUCCESS;
 	}
 

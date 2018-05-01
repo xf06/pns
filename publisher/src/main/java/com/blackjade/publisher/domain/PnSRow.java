@@ -1,8 +1,8 @@
 package com.blackjade.publisher.domain;
 
 public class PnSRow {
-	// id
-	//private int id;
+	
+	// private int id;
 	private long time;
 	private String oid;
 	private long pnsid;
@@ -15,15 +15,10 @@ public class PnSRow {
 	private String status;
 	private long traded;
 	private long margin;
-	private long net;	
-	
-//	public int getId() {
-//		return id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
+	private long net;
+	private long max;
+	private long min;
+
 
 	public long getTime() {
 		return time;
@@ -64,7 +59,7 @@ public class PnSRow {
 	public void setPoid(long poid) {
 		this.poid = poid;
 	}
-	
+
 	public char getSide() {
 		return side;
 	}
@@ -119,6 +114,22 @@ public class PnSRow {
 
 	public void setNet(long net) {
 		this.net = net;
+	}
+
+	public long getMax() {
+		return max;
+	}
+
+	public void setMax(long max) {
+		this.max = max;
+	}
+
+	public long getMin() {
+		return min;
+	}
+
+	public void setMin(long min) {
+		this.min = min;
 	}
 
 }
