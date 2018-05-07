@@ -3,7 +3,7 @@ package com.blackjade.publisher.apis;
 public class ComStatus {
 	
 	public static enum OrderStatus{
-		DEALING,
+		DEALING,	
 		PAID,
 		PAYCONFIRM,
 		CANCELLED,
@@ -60,19 +60,36 @@ public class ComStatus {
 		ORD_STATUS_PAYCONFIRM,
 		UNKNOWN
 	}
-	
+
 	public static enum PayConfirmStatus {
 		SUCCESS, 
 		WRONG_MSGID,
 		PC_DATABASE_ERR,
 		PC_DB_MISS_MATCH,
+		PC_DB_CORRUPT,
+		STATUS_FINAL,
+		STATUS_MISS,
+		DB_ORD_MISS,
+		DB_ORD_STATUS,
+		ORD_FINAL,
+		ORD_ERR,
+		DB_PNS_ERR,
 		UNKNOWN
 	}
 	
 	public static enum CancelStatus {
 		SUCCESS, 
 		WRONG_MSGID,
+		TYPE_ERR,
+		DB_ORD_MISS,
+		DB_ORD_MESS,
+		ORD_STATUS_FINAL,
+		ORD_UPDATE_FAILED,
+		DB_PNS_MISS,
+		DB_PNS_MESS,
+		DB_PNS_STATUS,
+		PNS_UPDATE_FAILED,
 		UNKNOWN
 	}
-		
+	
 }

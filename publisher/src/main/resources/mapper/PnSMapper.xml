@@ -9,22 +9,29 @@
 		VALUES
 		(#{time},#{oid},#{pnsid},#{pnsgid},#{poid},#{side},#{price},#{quant},#{status},#{traded},#{margin},#{net},#{max},#{min})
 	</insert>
-	
+
 	<!-- for update -->
 	<select id="selectPnSRowOid" parameterType="String"
 		resultType="com.blackjade.publisher.domain.PnSRow">
-		SELECT TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN FROM
+		SELECT
+		TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN
+		FROM
 		pns.pns a WHERE a.OID=#{oid} FOR UPDATE
-	</select> 
-	
-	<update id="updatePnSDeal" >
-			UPDATE pns.pns a SET MARGIN=#{margin},NET=#{net},STATUS=#{status} WHERE a.OID=#{oid} 
-	</update>
-	
-<!-- 	<update> -->
-<!-- 	</update> -->
+	</select>
 
-	<>
-	<>
+	<update id="updatePnSDeal">
+		UPDATE pns.pns a SET MARGIN=#{margin},NET=#{net},STATUS=#{status} WHERE
+		a.OID=#{oid}
+	</update>
+
+	<update id="updatePnSPayConfirm">
+		UPDATE pns.pns a SET MARGIN=#{margin},TRADED=#{traded},STATUS=#{status}
+		WHERE a.OID=#{oid}
+	</update>
+
+	<update id="updatePnSCancelDeal">
+		UPDATE pns.pns a SET MARGIN=#{margin},NET=#{net},STATUS=#{status} WHERE
+		a.OID=#{oid}
+	</update>
 
 </mapper>

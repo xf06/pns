@@ -18,7 +18,14 @@ public interface PnSDao {
 	public int updatePnSDeal(@Param(value = "oid") String oid, @Param(value = "margin") long margin,
 			@Param(value = "net") long net, @Param(value = "status") String status);
 
-	
-	
-	
+	// PayConfirm UPDATE
+	public int updatePnSPayConfirm(@Param(value = "oid") String oid, @Param(value = "margin") long margin,
+			@Param(value = "traded") long traded, @Param(value = "status") String status);
+
+	// Cancel Deal UPDATE
+	public int updatePnSCancelDeal(@Param(value = "oid") String oid, @Param(value = "margin") long margin,
+			@Param(value = "net") long net, @Param(value = "status") String status);
+
+	// Cancel Publish UPDATE
+	public int updatePnSCancelPublic();
 }

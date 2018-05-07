@@ -11,7 +11,7 @@ public interface OrderDao {
 
 	public int insertOrder(OrderRow ordrow);
 	
-	public OrderRow selectOrder(String oid);
+	public OrderRow selectOrder(String oid); // for update
 
 	public int updateOrderStatus(@Param(value = "oid")String oid, @Param(value = "status") String status);
 	

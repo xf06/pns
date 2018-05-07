@@ -74,33 +74,6 @@ public class PubController {
 		// SQL return code
 		int retcode = 0;
 
-		// save into database
-//		OrderRow ordrow = new OrderRow();
-//		ordrow.setTimestamp(System.currentTimeMillis());
-//		ordrow.setOid(oid.toString());
-//		ordrow.setCid(pub.getClientid());
-//		ordrow.setType('P');
-//		ordrow.setSide(pub.getSide());
-//		ordrow.setPnsoid(oid.toString());
-//		ordrow.setPoid(pub.getClientid());
-//		ordrow.setPnsid(pub.getPnsid());
-//		ordrow.setPnsgid(pub.getPnsgid());
-//		ordrow.setPrice(pub.getPrice());
-//		ordrow.setQuant(pub.getQuant());
-//		ordrow.setMin(pub.getMin());
-//		ordrow.setMax(pub.getMax());
-//		ordrow.setForm("normal");
-//		ordrow.setStatus(ComStatus.OrderStatus.PUBLISHED.toString());
-//
-//		try {
-//			retcode = this.ord.insertOrder(ordrow);
-//		} finally {
-//			if(retcode==0) {
-//				ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
-//				return ans;
-//			}
-//		}
-		
 		// update product list
 		
 		PnSRow pnsrow = new PnSRow();
@@ -218,8 +191,7 @@ public class PubController {
 			ans.setStatus(st);
 			return ans;
 		}
-		
-		
+				
 		// select the deal order check if it matches
 		// if so, update order
 		// if not return error
@@ -261,7 +233,13 @@ public class PubController {
 		
 		// update order status from Paid->PayConfirmed
 		// update PnS from margin->traded
-		st = this.tsv.updateOrdPnS(paycon);
+		try {
+			st = this.tsv.updateOrdPnS(paycon);
+		}catch(Exception e) {
+			ans.setStatus(ComStatus.PayConfirmStatus.valueOf(e.getMessage()));
+			return ans;
+		}		
+		
 		if(st!=ComStatus.PayConfirmStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
@@ -284,9 +262,29 @@ public class PubController {
 		
 		// construct ans
 		CCancelAns ans = new CCancelAns(can.getRequestid());
+		ans.setOid(can.getOid());
+		//...
+		if(st!=ComStatus.CancelStatus.SUCCESS) {
+			ans.setStatus(st);
+			return ans;
+		}
 		
-		// report error if occur
+		try{
+			st = this.tsv.updateOrdPnS(can);
+			if(st!=ComStatus.CancelStatus.SUCCESS) {
+				ans.setStatus(st);
+				return ans;
+			}
+			ans.setStatus(st);
+			return ans;
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.CancelStatus.valueOf(e.getMessage()));
+			return ans;
+		}
 				
-		return ans;
+		// report error if occur
+		
+		//return ans;
 	}
 }
