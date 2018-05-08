@@ -1,7 +1,7 @@
 package com.blackjade.publisher.domain;
 
 public class PnSRow {
-	
+
 	// private int id;
 	private long time;
 	private String oid;
@@ -18,7 +18,7 @@ public class PnSRow {
 	private long net;
 	private long max;
 	private long min;
-
+	private long can;
 
 	public long getTime() {
 		return time;
@@ -130,6 +130,14 @@ public class PnSRow {
 
 	public void setMin(long min) {
 		this.min = min;
+	}
+
+	public long getCan() {
+		return can;
+	}
+
+	public void setCan(long can) {
+		this.can = can;
 	}
 
 }

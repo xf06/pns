@@ -268,14 +268,18 @@ public class PubController {
 			ans.setStatus(st);
 			return ans;
 		}
-		
+				
 		try{
-			st = this.tsv.updateOrdPnS(can);
+			
+			Integer amnt = new Integer(0);
+			st = this.tsv.updateOrdPnS(can, amnt);
 			if(st!=ComStatus.CancelStatus.SUCCESS) {
 				ans.setStatus(st);
 				return ans;
 			}
+			
 			ans.setStatus(st);
+			ans.setQuant(amnt.intValue());
 			return ans;
 		}
 		catch(Exception e) {
@@ -283,8 +287,7 @@ public class PubController {
 			return ans;
 		}
 				
-		// report error if occur
-		
-		//return ans;
+		// report error if occur		
+		// return ans;
 	}
 }

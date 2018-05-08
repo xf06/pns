@@ -80,6 +80,7 @@ public class ComStatus {
 	public static enum CancelStatus {
 		SUCCESS, 
 		WRONG_MSGID,
+		MSG_ERR,
 		TYPE_ERR,
 		DB_ORD_MISS,
 		DB_ORD_MESS,
@@ -89,6 +90,7 @@ public class ComStatus {
 		DB_PNS_MESS,
 		DB_PNS_STATUS,
 		PNS_UPDATE_FAILED,
+		PNS_STATUS_FINAL,
 		UNKNOWN
 	}
 	

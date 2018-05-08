@@ -27,5 +27,7 @@ public interface PnSDao {
 			@Param(value = "net") long net, @Param(value = "status") String status);
 
 	// Cancel Publish UPDATE
-	public int updatePnSCancelPublic();
+	public int updatePnSCancelPublic(@Param(value = "oid") String oid, @Param(value = "net") long net,
+			@Param(value = "can") long can, @Param(value = "status") String status);
+	
 }

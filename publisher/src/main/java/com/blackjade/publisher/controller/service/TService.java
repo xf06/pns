@@ -29,7 +29,7 @@ public class TService {
 
 	@Autowired
 	private PnSDao pns;
-	
+
 	// # deal
 	public DealStatus updatePnS(final CDeal deal) {
 
@@ -250,342 +250,402 @@ public class TService {
 	}
 
 	// # payconfirm
-	public PayConfirmStatus updateOrdPnS(final CPayConfirm paycon) throws Exception{
-		
+	public PayConfirmStatus updateOrdPnS(final CPayConfirm paycon) throws Exception {
+
 		// update order status from Paid->PayConfirmed
 		// 1 select if the order is what it is
-		// 2 check status 
-		
-		int retcode=0;
+		// 2 check status
+
+		int retcode = 0;
 		try {
-			retcode = this.ord.updateOrderStatus(paycon.getOid().toString(), ComStatus.OrderStatus.PAYCONFIRM.toString());
-		}
-		catch(Exception e) {
+			retcode = this.ord.updateOrderStatus(paycon.getOid().toString(),
+					ComStatus.OrderStatus.PAYCONFIRM.toString());
+		} catch (Exception e) {
 			// logging data
-		}
-		finally {
-			if(retcode==0) {
+		} finally {
+			if (retcode == 0) {
 				return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
 			}
 		}
-		
+
 		// update PnS from margin->traded
 		PnSRow pnsrow = this.pns.selectPnSRowOid(paycon.getPnsoid().toString());
-		if(pnsrow==null)
+		if (pnsrow == null)
 			return ComStatus.PayConfirmStatus.PC_DB_MISS_MATCH;
-		
+
 		// check PnS values
 		long quant = pnsrow.getQuant();
 		long margin = pnsrow.getMargin();
 		long traded = pnsrow.getTraded();
 		long net = pnsrow.getNet();
 		String status = pnsrow.getStatus();
-		
-		// check margin, traded 
-		if(quant!=(margin+traded+net))
+
+		// check margin, traded
+		if (quant != (margin + traded + net))
 			return ComStatus.PayConfirmStatus.PC_DB_CORRUPT;
-				
+
 		// check PnS status
 		PnSStatus st = ComStatus.PnSStatus.UNKNOWN;
 		try {
 			st = ComStatus.PnSStatus.valueOf(status);
-		}catch(Exception e) {
-			
+		} catch (Exception e) {
+
 			return ComStatus.PayConfirmStatus.PC_DB_CORRUPT;
 		}
-		
-		if(st==ComStatus.PnSStatus.HALF_CANCELLED)
-			return ComStatus.PayConfirmStatus.STATUS_FINAL;		
-		if(st==ComStatus.PnSStatus.CANCELLED)
+
+		if (st == ComStatus.PnSStatus.HALF_CANCELLED)
 			return ComStatus.PayConfirmStatus.STATUS_FINAL;
-		if(st==ComStatus.PnSStatus.FULL_TRADED)
+		if (st == ComStatus.PnSStatus.CANCELLED)
 			return ComStatus.PayConfirmStatus.STATUS_FINAL;
-		
+		if (st == ComStatus.PnSStatus.FULL_TRADED)
+			return ComStatus.PayConfirmStatus.STATUS_FINAL;
+
 		// PUBLISH, dealing operation missing
-		if(st==ComStatus.PnSStatus.PUBLISHED)
+		if (st == ComStatus.PnSStatus.PUBLISHED)
 			return ComStatus.PayConfirmStatus.STATUS_MISS;
-				
+
 		// update ord status
-		
+
 		OrderRow ordrow = null;
 		try {
 			ordrow = this.ord.selectOrder(paycon.getOid().toString());
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			return ComStatus.PayConfirmStatus.DB_ORD_MISS;
 		}
-		
-		if(ordrow==null)
+
+		if (ordrow == null)
 			return ComStatus.PayConfirmStatus.DB_ORD_MISS;
-		
+
 		// check ordrow
-		if(ordrow.getPnsgid()!=paycon.getPnsgid())
+		if (ordrow.getPnsgid() != paycon.getPnsgid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-		
-		if(ordrow.getPnsid()!=paycon.getPnsid())
+
+		if (ordrow.getPnsid() != paycon.getPnsid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-		
-		if(ordrow.getPoid()!=paycon.getPoid())
+
+		if (ordrow.getPoid() != paycon.getPoid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-		
-		if(ordrow.getPrice()!=paycon.getPrice())
+
+		if (ordrow.getPrice() != paycon.getPrice())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-		
-		if(ordrow.getQuant()!=paycon.getQuant())
+
+		if (ordrow.getQuant() != paycon.getQuant())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-		
-		if(ordrow.getSide()!=paycon.getSide())
-			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;			
-		
+
+		if (ordrow.getSide() != paycon.getSide())
+			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
+
 		// check ord status
-		
+
 		OrderStatus ost = ComStatus.OrderStatus.UNKNOWN;
 		try {
 			ost = ComStatus.OrderStatus.valueOf(ordrow.getStatus());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 		}
-		
-		switch(ost) {
-			case DEALING: return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
-			case PAID:;break;
-			case PAYCONFIRM: return ComStatus.PayConfirmStatus.ORD_FINAL;
-			case CANCELLED: return ComStatus.PayConfirmStatus.ORD_FINAL;
-			case DONE: return ComStatus.PayConfirmStatus.ORD_FINAL;
-			case REJECT_LOCK: return ComStatus.PayConfirmStatus.ORD_FINAL;
-			case REJECT_DONE: return ComStatus.PayConfirmStatus.ORD_FINAL;
-			default:return ComStatus.PayConfirmStatus.ORD_ERR;
+
+		switch (ost) {
+		case DEALING:
+			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
+		case PAID:
+			;
+			break;
+		case PAYCONFIRM:
+			return ComStatus.PayConfirmStatus.ORD_FINAL;
+		case CANCELLED:
+			return ComStatus.PayConfirmStatus.ORD_FINAL;
+		case DONE:
+			return ComStatus.PayConfirmStatus.ORD_FINAL;
+		case REJECT_LOCK:
+			return ComStatus.PayConfirmStatus.ORD_FINAL;
+		case REJECT_DONE:
+			return ComStatus.PayConfirmStatus.ORD_FINAL;
+		default:
+			return ComStatus.PayConfirmStatus.ORD_ERR;
 		}
-		
-		
-		// check margin, and update margin		
-		if(margin<ordrow.getQuant())
+
+		// check margin, and update margin
+		if (margin < ordrow.getQuant())
 			return ComStatus.PayConfirmStatus.DB_PNS_ERR;
-		
+
 		margin = margin - ordrow.getQuant();
 		traded = traded + ordrow.getQuant();
-		
+
 		int pnsret = 0;
 		int ordret = 0;
-		
-		if(st==ComStatus.PnSStatus.HALF_TRADED) {			
-			if(net<=0)
+
+		if (st == ComStatus.PnSStatus.HALF_TRADED) {
+			if (net <= 0)
 				return ComStatus.PayConfirmStatus.DB_PNS_ERR;
 			try {
-				pnsret = this.pns.updatePnSPayConfirm(ordrow.getPnsoid(), margin, traded, ComStatus.PnSStatus.HALF_TRADED.toString());
-				if(pnsret==0)
+				pnsret = this.pns.updatePnSPayConfirm(ordrow.getPnsoid(), margin, traded,
+						ComStatus.PnSStatus.HALF_TRADED.toString());
+				if (pnsret == 0)
 					return ComStatus.PayConfirmStatus.DB_PNS_ERR;
-				
-				ordret = this.ord.updateOrderStatus(ordrow.getOid(),ComStatus.OrderStatus.PAYCONFIRM.toString());
-				if(ordret==0)
+
+				ordret = this.ord.updateOrderStatus(ordrow.getOid(), ComStatus.OrderStatus.PAYCONFIRM.toString());
+				if (ordret == 0)
 					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
-			}catch(Exception e) {
+			} catch (Exception e) {
 				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
 			}
 			return ComStatus.PayConfirmStatus.SUCCESS;
 		}
-				
-		if(st==ComStatus.PnSStatus.FULL_LOCKED) {
-			if(net!=0)
+
+		if (st == ComStatus.PnSStatus.FULL_LOCKED) {
+			if (net != 0)
 				return ComStatus.PayConfirmStatus.DB_PNS_ERR;
-			
-			try {			
+
+			try {
 				PnSStatus tempst = ComStatus.PnSStatus.UNKNOWN;
-				if(margin!=0)
+				if (margin != 0)
 					tempst = ComStatus.PnSStatus.FULL_LOCKED;
 				else
 					tempst = ComStatus.PnSStatus.FULL_TRADED;
-				
-				pnsret = this.pns.updatePnSPayConfirm(ordrow.getPnsoid(), margin, traded, tempst.toString());	
-				if(pnsret==0)
+
+				pnsret = this.pns.updatePnSPayConfirm(ordrow.getPnsoid(), margin, traded, tempst.toString());
+				if (pnsret == 0)
 					return ComStatus.PayConfirmStatus.DB_PNS_ERR;
-					
-				ordret = this.ord.updateOrderStatus(ordrow.getOid(),ComStatus.OrderStatus.PAYCONFIRM.toString());
-				if(ordret==0)
-					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());					
-			}catch(Exception e) {
+
+				ordret = this.ord.updateOrderStatus(ordrow.getOid(), ComStatus.OrderStatus.PAYCONFIRM.toString());
+				if (ordret == 0)
+					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
+			} catch (Exception e) {
 				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
 			}
 			return ComStatus.PayConfirmStatus.SUCCESS;
 		}
-		
+
 		return ComStatus.PayConfirmStatus.UNKNOWN;
 	}
 
 	// # cancel
-	public CancelStatus updateOrdPnS(final CCancel can) throws Exception{
-		
+	public CancelStatus updateOrdPnS(final CCancel can, Integer amnt) throws Exception {
+
 		int ordret = 0;
 		int pnsret = 0;
-		
+
 		// # DEALING
-		if(can.getType()=='D') {
-			
+		if (can.getType() == 'D') {
+
 			// update order status DEALING -> CANCELLED
 
 			OrderRow ordrow = null;
 			try {
 				ordrow = this.ord.selectOrder(can.getOid().toString());
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return ComStatus.CancelStatus.DB_ORD_MISS;
 			}
-			
-			if(ordrow==null)
+
+			if (ordrow == null)
 				return ComStatus.CancelStatus.DB_ORD_MISS;
-			
+
 			// check if ordrow match can
-			
-			if(ordrow.getPnsgid()!=can.getPnsgid())
-				return ComStatus.CancelStatus.DB_ORD_MISS; 
-			
-			if(ordrow.getPnsid()!=can.getPnsid())
-				return ComStatus.CancelStatus.DB_ORD_MISS; 
-			
-			if(!ordrow.getPnsoid().equals(can.getPnsoid().toString()))
-				return ComStatus.CancelStatus.DB_ORD_MISS; 
-						
-			if(ordrow.getSide()!=can.getSide())
-				return ComStatus.CancelStatus.DB_ORD_MISS; 
-			
-			if(ordrow.getPrice()!=can.getPrice())
+
+			if (ordrow.getPnsgid() != can.getPnsgid())
 				return ComStatus.CancelStatus.DB_ORD_MISS;
-			
-			if(ordrow.getQuant()!=can.getQuant())
-				return ComStatus.CancelStatus.DB_ORD_MISS; 
-									
-			
+
+			if (ordrow.getPnsid() != can.getPnsid())
+				return ComStatus.CancelStatus.DB_ORD_MISS;
+
+			if (!ordrow.getPnsoid().equals(can.getPnsoid().toString()))
+				return ComStatus.CancelStatus.DB_ORD_MISS;
+
+			if (ordrow.getSide() != can.getSide())
+				return ComStatus.CancelStatus.DB_ORD_MISS;
+
+			if (ordrow.getPrice() != can.getPrice())
+				return ComStatus.CancelStatus.DB_ORD_MISS;
+
+			if (ordrow.getQuant() != can.getQuant())
+				return ComStatus.CancelStatus.DB_ORD_MISS;
+
 			try {
-				if(ComStatus.OrderStatus.DEALING != ComStatus.OrderStatus.valueOf(ordrow.getStatus()))
+				if (ComStatus.OrderStatus.DEALING != ComStatus.OrderStatus.valueOf(ordrow.getStatus()))
 					return ComStatus.CancelStatus.ORD_STATUS_FINAL;
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				return ComStatus.CancelStatus.DB_ORD_MESS;
 			}
-						
-			// select pns and checks 
+
+			// select pns and checks
 			PnSRow pnsrow = null;
-			try{
-				pnsrow = this.pns.selectPnSRowOid(can.getPnsoid().toString());//for update
-			}catch(Exception e) {
+			try {
+				pnsrow = this.pns.selectPnSRowOid(can.getPnsoid().toString());// for update
+			} catch (Exception e) {
 				return ComStatus.CancelStatus.DB_PNS_MISS;
 			}
-			
-			if(pnsrow==null)
+
+			if (pnsrow == null)
 				return ComStatus.CancelStatus.DB_PNS_MISS;
-						
+
 			// check pns status
-			
-			PnSStatus pnsst = null;			
-			try {				
-				pnsst = ComStatus.PnSStatus.valueOf(pnsrow.getStatus());			
-			}
-			catch(Exception e){
+
+			PnSStatus pnsst = null;
+			try {
+				pnsst = ComStatus.PnSStatus.valueOf(pnsrow.getStatus());
+			} catch (Exception e) {
 				return ComStatus.CancelStatus.DB_PNS_MESS;
 			}
-			if(pnsst==null)
+			if (pnsst == null)
 				return ComStatus.CancelStatus.DB_PNS_MESS;
-			
-			
-			if((pnsst!=ComStatus.PnSStatus.HALF_TRADED)&&(pnsst!=ComStatus.PnSStatus.FULL_LOCKED))
+
+			if ((pnsst != ComStatus.PnSStatus.HALF_TRADED) && (pnsst != ComStatus.PnSStatus.FULL_LOCKED))
 				return ComStatus.CancelStatus.DB_PNS_STATUS;
-			
-			
+
 			long quant = pnsrow.getQuant();
 			long margin = pnsrow.getMargin();
 			long traded = pnsrow.getTraded();
-			long net = pnsrow.getNet();			
-			
-			//long min = pnsrow.getMin(); // those are in RMB
-			//long max = pnsrow.getMax(); // those are in RMB
-			
-			// check  data
-			if(quant!=(margin+net+traded))
+			long net = pnsrow.getNet();
+
+			// long min = pnsrow.getMin(); // those are in RMB
+			// long max = pnsrow.getMax(); // those are in RMB
+
+			// check data
+			if (quant != (margin + net + traded))
 				return ComStatus.CancelStatus.DB_PNS_MESS;
-			
-			if(margin<can.getQuant())
+
+			if (margin < can.getQuant())
 				return ComStatus.CancelStatus.DB_PNS_MESS;
-			
-			margin-=can.getQuant();
-			net+=can.getQuant();
-			
-			// if(min>net)
-			// min=net;			
-			
+
+			margin -= can.getQuant();
+			net += can.getQuant();
+
 			// update order status DEALING -> CANCELLED
 			try {
-				ordret = this.ord.updateOrderStatus(can.getOid().toString(), ComStatus.OrderStatus.CANCELLED.toString());
-				if(ordret==0)
+				ordret = this.ord.updateOrderStatus(can.getOid().toString(),
+						ComStatus.OrderStatus.CANCELLED.toString());
+				if (ordret == 0)
 					return ComStatus.CancelStatus.ORD_UPDATE_FAILED;
+			} catch (Exception e) {
+				return ComStatus.CancelStatus.ORD_UPDATE_FAILED;
 			}
-			catch(Exception e) {
-				return ComStatus.CancelStatus.ORD_UPDATE_FAILED; 
-			}
-			
-			// update pns status FULL_LOCKED/HALF_TRADED -> HALF_TRADED  
+
+			// update pns status FULL_LOCKED/HALF_TRADED -> HALF_TRADED
 			try {
-				pnsret = this.pns.updatePnSCancelDeal(can.getPnsoid().toString(), margin, net, ComStatus.PnSStatus.HALF_TRADED.toString());
-				if(pnsret==0)
+				pnsret = this.pns.updatePnSCancelDeal(can.getPnsoid().toString(), margin, net,
+						ComStatus.PnSStatus.HALF_TRADED.toString());
+				if (pnsret == 0)
 					throw new Exception(ComStatus.CancelStatus.PNS_UPDATE_FAILED.toString());
-			
+
+				amnt = can.getQuant();
 				return ComStatus.CancelStatus.SUCCESS;
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				// save into logs
-				
-				throw e; 
+				throw new Exception(ComStatus.CancelStatus.PNS_UPDATE_FAILED.toString());
 			}
-			
+
 			/*
-			 * 		
-			PnS:
-			PUBLISHED,		//0
-			HALF_TRADED,	//0
-			//HALF_LOCKED,	//0
-			FULL_LOCKED,	//0
-			FULL_TRADED,	//final
-			CANCELLED,		//final
-			HALF_CANCELLED,	//final
-			UNKNOWN			//final					
-			
-			Order:
-			DEALING,
-			PAID,
-			PAYCONFIRM,
-			CANCELLED,
-			DONE,
-			REJECT_LOCK,
-			REJECT_DONE,
-			ERROR,
-			UNKNOWN
+			 * 
+			 * PnS: PUBLISHED, //0 HALF_TRADED, //0 //HALF_LOCKED, //0 FULL_LOCKED, //0
+			 * FULL_TRADED, //final CANCELLED, //final HALF_CANCELLED, //final UNKNOWN
+			 * //final
+			 * 
+			 * Order: DEALING, PAID, PAYCONFIRM, CANCELLED, DONE, REJECT_LOCK, REJECT_DONE,
+			 * ERROR, UNKNOWN
 			 * 
 			 */
-			
+			// --------- //
+			// --------- //
+
 		}
-	
+
 		// # PUBLISH
-		if(can.getType()=='P') {
-			
-			// update 
+		if (can.getType() == 'P') {
+
+			// update
 			PnSRow pnsrow = null;
 			try {
 				pnsrow = this.pns.selectPnSRowOid(can.getPnsoid().toString());
-				if(pnsrow==null)
+				if (pnsrow == null)
 					return ComStatus.CancelStatus.DB_PNS_MISS;
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				return ComStatus.CancelStatus.DB_PNS_MISS;
 			}
-						
-			
+
 			// check pns status
-			
-			// update status net
-			
+			PnSStatus pnsst = null;
+			try {
+				pnsst = ComStatus.PnSStatus.valueOf(pnsrow.getStatus());
+				if (pnsst == null)
+					return ComStatus.CancelStatus.DB_PNS_STATUS;
+			} catch (Exception e) {
+				return ComStatus.CancelStatus.DB_PNS_STATUS;
+			}
+
+			if ((pnsst != ComStatus.PnSStatus.PUBLISHED) && (pnsst != ComStatus.PnSStatus.HALF_TRADED))
+				return ComStatus.CancelStatus.PNS_STATUS_FINAL;
+
+			//
+			long quant = pnsrow.getQuant();
+			long margin = pnsrow.getMargin();
+			long net = pnsrow.getNet();
+			long traded = pnsrow.getTraded();
+			long cancelled = pnsrow.getCan();
+
+			// check pnsrow
+			if (quant != (margin + net + traded + cancelled))
+				return ComStatus.CancelStatus.DB_PNS_MESS;
+
+			// can need to check if can.clientid == poid; in reviewdata
+
+			// update pnsrow
+			if (pnsst == ComStatus.PnSStatus.PUBLISHED) {
+				if (margin != 0)
+					return ComStatus.CancelStatus.DB_PNS_MESS;
+				if (net != quant)
+					return ComStatus.CancelStatus.DB_PNS_MESS;
+				if (traded != 0)
+					return ComStatus.CancelStatus.DB_PNS_MESS;
+				if (cancelled != 0)
+					return ComStatus.CancelStatus.DB_PNS_MESS;
+
+				net -= quant;
+				cancelled += quant;
+
+				try {
+					pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, cancelled,
+							ComStatus.PnSStatus.CANCELLED.toString());
+					if (pnsret != 0)
+						return ComStatus.CancelStatus.PNS_UPDATE_FAILED;
+				} catch (Exception e) {
+					return ComStatus.CancelStatus.PNS_UPDATE_FAILED;
+				}
+				// need to return some data like cancelling amount;
+				amnt = can.getQuant();
+				return ComStatus.CancelStatus.SUCCESS;
+			}
+
+			if (pnsst == ComStatus.PnSStatus.HALF_TRADED) {
+				if (margin != 0) {
+					// HALF_TRADED->FULL_LOCKED
+					net -= 0;
+					cancelled += net;
+
+					pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, cancelled,
+							ComStatus.PnSStatus.FULL_LOCKED.toString());
+					if (pnsret != 0)
+						return ComStatus.CancelStatus.PNS_UPDATE_FAILED;
+
+					amnt = (int) cancelled;
+					return ComStatus.CancelStatus.SUCCESS;
+				} else {
+					// HALF_TRADED->FULL_CANCELLED
+					net -= 0;
+					cancelled += net;
+
+					pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, cancelled,
+							ComStatus.PnSStatus.HALF_CANCELLED.toString());
+					if (pnsret != 0)
+						return ComStatus.CancelStatus.PNS_UPDATE_FAILED;
+
+					amnt = (int) cancelled;
+					return ComStatus.CancelStatus.SUCCESS;
+				}
+			}
+
 		}
-				
-				
-		return 	ComStatus.CancelStatus.TYPE_ERR;
+
+		return ComStatus.CancelStatus.TYPE_ERR;
 	}
 
 }

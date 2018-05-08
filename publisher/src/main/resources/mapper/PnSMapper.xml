@@ -5,16 +5,16 @@
 	<insert id="insertPnS" parameterType="com.blackjade.publisher.domain.PnSRow"
 		useGeneratedKeys="true" keyProperty="ID">
 		INSERT INTO pns.pns
-		(TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN)
+		(TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN,CAN)
 		VALUES
-		(#{time},#{oid},#{pnsid},#{pnsgid},#{poid},#{side},#{price},#{quant},#{status},#{traded},#{margin},#{net},#{max},#{min})
+		(#{time},#{oid},#{pnsid},#{pnsgid},#{poid},#{side},#{price},#{quant},#{status},#{traded},#{margin},#{net},#{max},#{min},#{can})
 	</insert>
 
 	<!-- for update -->
 	<select id="selectPnSRowOid" parameterType="String"
 		resultType="com.blackjade.publisher.domain.PnSRow">
 		SELECT
-		TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN
+		TIME,OID,PNSID,PNSGID,POID,SIDE,PRICE,QUANT,STATUS,TRADED,MARGIN,NET,MAX,MIN,CAN
 		FROM
 		pns.pns a WHERE a.OID=#{oid} FOR UPDATE
 	</select>

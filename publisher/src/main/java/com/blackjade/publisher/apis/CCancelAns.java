@@ -11,6 +11,7 @@ public class CCancelAns {
 	private UUID requestid;
 	private int clientid;
 	private UUID oid;
+	private char type;	//D and P
 	private char side;
 	private UUID pnsoid; // pns order id
 	private int poid; // product owner id
@@ -19,7 +20,7 @@ public class CCancelAns {
 	private long price;
 	private int quant;
 	private CancelStatus status;
-
+	
 	public CCancelAns() {}
 	
 	public CCancelAns(UUID requestid) {
@@ -57,6 +58,14 @@ public class CCancelAns {
 
 	public void setOid(UUID oid) {
 		this.oid = oid;
+	}
+	
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
 	}
 
 	public char getSide() {

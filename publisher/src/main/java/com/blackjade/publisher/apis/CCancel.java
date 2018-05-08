@@ -25,6 +25,11 @@ public class CCancel {
 	}
 
 	public CancelStatus reviewData() {
+		
+		if(this.type=='P')
+			if(this.clientid!=this.poid)
+				return ComStatus.CancelStatus.MSG_ERR;
+		
 		return ComStatus.CancelStatus.SUCCESS;
 	}
 
