@@ -11,6 +11,7 @@ public class CQueryPnSTopPage {
 	private int clientid;
 	private int pnsid;
 	private int pnsgid;
+	private char side;
 
 	public CQueryPnSTopPage(){
 		this.messageid = "6005";
@@ -58,6 +59,14 @@ public class CQueryPnSTopPage {
 
 	public void setPnsgid(int pnsgid) {
 		this.pnsgid = pnsgid;
+	}
+
+	public char getSide() {
+		return side;
+	}
+
+	public void setSide(char side) {
+		this.side = side;
 	}
 
 }

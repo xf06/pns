@@ -29,6 +29,7 @@ public class ComStatus {
 		SUCCESS, 
 		WRONG_MSGID,
 		DATABASE_ERR,
+		IN_MSG_ERR,
 		UNKNOWN
 	}
 	

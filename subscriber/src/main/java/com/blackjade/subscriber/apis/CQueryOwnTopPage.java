@@ -12,7 +12,9 @@ public class CQueryOwnTopPage {
 	private int clientid;
 	private int pnsid;
 	private int pnsgid;
-
+	
+	//private UUID pnsoid;
+	
 	public CQueryOwnTopPage() {
 		this.messageid = "6001";
 	}

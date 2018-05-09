@@ -53,7 +53,11 @@ public class ComStatus {
 	}
 
 	public static enum QueryOwnTopStatus {
-		SUCCESS, WRONG_MSGID
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_DB_MISS,
+		UNKNOWN
 	}
 
 	public static enum QueryOwnNextStatus {
@@ -61,7 +65,11 @@ public class ComStatus {
 	}
 
 	public static enum QueryPnSTopStatus {
-		SUCCESS, WRONG_MSGID
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_DB_MISS,
+		UNKNOWN,
 	}
 
 	public static enum QueryPnSNextStatus {

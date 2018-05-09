@@ -1,0 +1,21 @@
+package com.blackjade.subscriber.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+import com.blackjade.subscriber.domain.PubBookRow;
+
+@Component
+public interface PubBookDao {
+
+	// select the total number
+	public int selectNumPns(@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid,
+			@Param(value = "side") char side);// some condition of selection
+
+	// select the N page list
+	public List<PubBookRow> selectPubBookRow(@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid,
+			@Param(value = "side") char side, @Param(value = "num") int num);// num = pagenum*10
+	
+}

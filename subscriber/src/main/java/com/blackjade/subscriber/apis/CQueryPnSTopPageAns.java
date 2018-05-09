@@ -1,8 +1,10 @@
 package com.blackjade.subscriber.apis;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSTopStatus;
+import com.blackjade.subscriber.domain.PubBookRow;
 
 //0x6006	{requestid, clientid, pnsid, pnsgid, status, list[]}
 public class CQueryPnSTopPageAns {
@@ -12,8 +14,11 @@ public class CQueryPnSTopPageAns {
 	private int clientid;
 	private int pnsid;
 	private int pnsgid;
+	private char side;
 	private QueryPnSTopStatus status;
-	private ComStatus.ComMember[] list;
+	private int totalnum;
+	// private ComStatus.ComMember[] list;
+	private List<PubBookRow> list;
 
 	public CQueryPnSTopPageAns(UUID requestid) {
 		this.messageid = "6006";
@@ -59,7 +64,7 @@ public class CQueryPnSTopPageAns {
 	public void setPnsgid(int pnsgid) {
 		this.pnsgid = pnsgid;
 	}
-	
+
 	public QueryPnSTopStatus getStatus() {
 		return status;
 	}
@@ -68,12 +73,28 @@ public class CQueryPnSTopPageAns {
 		this.status = status;
 	}
 
-	public ComStatus.ComMember[] getList() {
+	public List<PubBookRow> getList() {
 		return list;
 	}
 
-	public void setList(ComStatus.ComMember[] list) {
+	public void setList(List<PubBookRow> list) {
 		this.list = list;
+	}
+
+	public char getSide() {
+		return side;
+	}
+
+	public void setSide(char side) {
+		this.side = side;
+	}
+
+	public int getTotalnum() {
+		return totalnum;
+	}
+
+	public void setTotalnum(int totalnum) {
+		this.totalnum = totalnum;
 	}
 
 }

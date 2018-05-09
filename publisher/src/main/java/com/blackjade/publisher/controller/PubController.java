@@ -21,8 +21,6 @@ import com.blackjade.publisher.apis.CPublish;
 import com.blackjade.publisher.apis.CPublishAns;
 import com.blackjade.publisher.apis.ComStatus;
 import com.blackjade.publisher.apis.ComStatus.DealStatus;
-import com.blackjade.publisher.apis.ComStatus.PaidStatus;
-import com.blackjade.publisher.apis.ComStatus.PayConfirmStatus;
 import com.blackjade.publisher.apis.ComStatus.PublishStatus;
 import com.blackjade.publisher.controller.service.TService;
 import com.blackjade.publisher.dao.OrderDao;
