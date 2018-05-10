@@ -27,6 +27,9 @@ public class CDeal {
 		if(this.quant<=0)
 			return ComStatus.DealStatus.IN_QUANT_ERR;
 		
+		if(this.pnsoid==null)
+			return ComStatus.DealStatus.IN_MSG_ERR;
+	
 		return ComStatus.DealStatus.SUCCESS;
 	}
 

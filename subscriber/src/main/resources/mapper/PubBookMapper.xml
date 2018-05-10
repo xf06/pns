@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackjade.subscriber.dao.PubBookDao">
+
+	<select id="selectNumPns">
+		SELECT COUNT(*) FROM pns.pns a WHERE
+		a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND a.SIDE=#{side}
+	</select>
+
+	<select id="selectPubBookRow" resultType="com.blackjade.subscriber.domain.PubBookRow">
+		SELECT a.OID PNSOID,
+		a.POID,customer.USERNAME PONAME, a.PRICE, a.QUANT,
+		a.NET, a.MAX, a.MIN
+		FROM pns.pns a INNER JOIN crm.customer ON
+		a.POID=crm.customer.ID
+		WHERE
+		a.SIDE=#{side} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND
+		a.STATUS IN
+		('PUBLISHED', 'HALF_TRADED') ORDER BY a.PRICE ASC LIMIT
+		#{num}, 10
+	</select>
+
+</mapper>

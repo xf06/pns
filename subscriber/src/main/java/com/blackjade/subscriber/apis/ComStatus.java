@@ -68,6 +68,7 @@ public class ComStatus {
 		SUCCESS, 
 		WRONG_MSGID,
 		INMSG_ERR,
+		PNS_EMPTY,
 		PNS_DB_MISS,
 		UNKNOWN,
 	}
