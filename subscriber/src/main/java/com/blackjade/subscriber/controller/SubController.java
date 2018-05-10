@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blackjade.subscriber.apis.CQueryOwnTopPage;
+import com.blackjade.subscriber.apis.CQueryOwnTopPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSNextPage;
 import com.blackjade.subscriber.apis.CQueryPnSNextPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSTopPage;
 import com.blackjade.subscriber.apis.CQueryPnSTopPageAns;
 import com.blackjade.subscriber.apis.ComStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryOwnTopStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSNextStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSTopStatus;
 import com.blackjade.subscriber.dao.PubBookDao;
@@ -25,17 +28,15 @@ public class SubController {
 	@Autowired
 	private PubBookDao pubbook;
 	
-	//@Autowired
-	//private ;
 	@RequestMapping(value = "/markettop", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryPnSTopPageAns QueryPnSTopPage(@RequestBody CQueryPnSTopPage qpns) {		
+
 		// check input data
 		QueryPnSTopStatus st = qpns.reviewData();
 		
 		// construct ans
 		CQueryPnSTopPageAns ans = new CQueryPnSTopPageAns(qpns.getRequestid());
-				
 		ans.setSide(qpns.getSide());
 		ans.setClientid(qpns.getClientid());
 		ans.setPnsgid(qpns.getPnsgid());
@@ -46,17 +47,16 @@ public class SubController {
 			ans.setStatus(st);
 			return ans;
 		}
-				
-		//--------------------------------
-		// if everything OK
+		
+		// select num and PubBookRows
 		int totalnum = 0; 
 		try {
-			totalnum = this.pubbook.selectNumPns(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide()); //
+			totalnum = this.pubbook.selectNumPns(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide());
 			if(totalnum==0) {
 				ans.setTotalnum(totalnum);
-				ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_DB_MISS);
+				ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_EMPTY);				
 				return ans;
-			}
+			}			
 		}
 		catch(Exception e) {			
 			ans.setTotalnum(totalnum);
@@ -64,14 +64,32 @@ public class SubController {
 			return ans;
 		}
 		
-		// there are list
+		// set totalnum and list
 		ans.setTotalnum(totalnum);
-		// get list
-		List<PubBookRow> elist  = this.pubbook.selectPubBookRow(qpns.getPnsgid(),qpns.getPnsid(),qpns.getSide(), 0); // top page		
+		List<PubBookRow> elist = null; // java list container
 		
-		//--------------------------------
+		try {
+			elist  = this.pubbook.selectPubBookRow(qpns.getPnsgid(),qpns.getPnsid(),qpns.getSide(), 0); // top page
+			if(elist==null) {
+				ans.setTotalnum(totalnum);
+				ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_DB_MISS);
+				return ans;
+			}
+		}
+		catch(Exception e) {
+			ans.setTotalnum(0);
+			ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_DB_MISS);
+			return ans;
+		}
 		
+		if(elist.isEmpty()) {
+			ans.setTotalnum(0);
+			ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_DB_MISS);
+			return ans;
+		}
 		
+		ans.setStatus(ComStatus.QueryPnSTopStatus.SUCCESS);
+		ans.setList(elist);		
 		return ans;
 	}
 	
@@ -81,7 +99,7 @@ public class SubController {
 		
 		QueryPnSNextStatus st = qpns.reviewData();
 		// construct ans
-		CQueryPnSNextPageAns ans = new CQueryPnSTopPageAns(qpns.getRequestid());
+		CQueryPnSNextPageAns ans = new CQueryPnSNextPageAns(qpns.getRequestid());
 		
 		if(st!=ComStatus.QueryPnSNextStatus.SUCCESS) {
 			ans.setStatus(st);
@@ -93,13 +111,13 @@ public class SubController {
 	
 	@RequestMapping(value = "/ownords", method = RequestMethod.POST)
 	@ResponseBody
-	public CQueryPnSTopPageAns QueryOwnTopPage(@RequestBody CQueryPnSTopPage qpns) {		
+	public CQueryOwnTopPageAns QueryOwnTopPage(@RequestBody CQueryOwnTopPage qpns) {		
 		
-		QueryPnSTopStatus st = qpns.reviewData();
+		QueryOwnTopStatus st = qpns.reviewData();
 		// construct ans
-		CQueryPnSTopPageAns ans = new CQueryPnSTopPageAns(qpns.getRequestid());
+		CQueryOwnTopPageAns ans = new CQueryOwnTopPageAns(qpns.getRequestid());
 		
-		if(st!=ComStatus.QueryPnSTopStatus.SUCCESS) {
+		if(st!=ComStatus.QueryOwnTopStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}
