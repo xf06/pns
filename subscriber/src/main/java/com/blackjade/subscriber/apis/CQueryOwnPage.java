@@ -1,13 +1,12 @@
 package com.blackjade.subscriber.apis;
 
-import java.util.List;
 import java.util.UUID;
 
-import com.blackjade.subscriber.apis.ComStatus.QueryPnSTopStatus;
-import com.blackjade.subscriber.domain.PubBookRow;
+import com.blackjade.subscriber.apis.ComStatus.QueryOwnStatus;
 
-//0x6006	{requestid, clientid, pnsid, pnsgid, status, list[]}
-public class CQueryPnSTopPageAns {
+// QueryOwnPage	0x6023	{requestid, clientid, pnsid, pnsgid}	HTTP
+
+public class CQueryOwnPage {
 
 	private String messageid;
 	private UUID requestid;
@@ -15,17 +14,13 @@ public class CQueryPnSTopPageAns {
 	private int pnsid;
 	private int pnsgid;
 	private char side;
-	private QueryPnSTopStatus status;
-	private int totalnum;
-	
-	//-><-// private ComStatus.ComMember[] list;
-	
-	private List<PubBookRow> list;
-	
-	
-	public CQueryPnSTopPageAns(UUID requestid) {
-		this.messageid = "6006";
-		this.requestid = requestid;
+
+	public CQueryOwnPage() {
+		this.messageid = "6023";
+	}
+
+	public QueryOwnStatus reviewData() {
+		return ComStatus.QueryOwnStatus.SUCCESS;
 	}
 
 	public String getMessageid() {
@@ -68,36 +63,12 @@ public class CQueryPnSTopPageAns {
 		this.pnsgid = pnsgid;
 	}
 
-	public QueryPnSTopStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(QueryPnSTopStatus status) {
-		this.status = status;
-	}
-
-	public List<PubBookRow> getList() {
-		return list;
-	}
-
-	public void setList(List<PubBookRow> list) {
-		this.list = list;
-	}
-
 	public char getSide() {
 		return side;
 	}
 
 	public void setSide(char side) {
 		this.side = side;
-	}
-
-	public int getTotalnum() {
-		return totalnum;
-	}
-
-	public void setTotalnum(int totalnum) {
-		this.totalnum = totalnum;
 	}
 
 }

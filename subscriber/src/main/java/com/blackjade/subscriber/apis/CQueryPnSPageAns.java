@@ -1,5 +1,6 @@
 package com.blackjade.subscriber.apis;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ public class CQueryPnSPageAns {
 	public CQueryPnSPageAns(UUID requestid) {
 		this.messageid = "6022";
 		this.requestid = requestid;
+		this.data =  new ArrayList<PubBookRow>();
 	}
 
 	public String getMessageid() {

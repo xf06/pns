@@ -2,7 +2,6 @@ package com.blackjade.subscriber.apis;
 
 public class ComStatus {
 
-
 	public static enum QueryOwnTopStatus {
 		SUCCESS, 
 		WRONG_MSGID,
@@ -12,9 +11,13 @@ public class ComStatus {
 	}
 
 	public static enum QueryOwnNextStatus {
-		SUCCESS, WRONG_MSGID
+		SUCCESS, 
+		WRONG_MSGID
 	}
 
+	
+	//------------------- New APIs --------------------------//
+	
 	public static enum QueryPnSStatus {
 		SUCCESS, 
 		WRONG_MSGID,
@@ -23,6 +26,17 @@ public class ComStatus {
 		PNS_DB_MISS,
 		UNKNOWN,
 	}
+	
+	public static enum QueryOwnStatus {
+		SUCCESS,
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_EMPTY,
+		PNS_DB_MISS,
+		UNKNOWN,
+	}
+	
+	//------------------------------------------------------//
 	
 	public static enum QueryPnSTopStatus {
 		SUCCESS, 
