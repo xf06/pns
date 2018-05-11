@@ -1,8 +1,10 @@
 package com.blackjade.subscriber.apis;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSNextStatus;
+import com.blackjade.subscriber.domain.PubBookRow;
 
 //0x6008	{requestid, clientid, pnsid, pnsgid, status index, list[]}
 
@@ -12,9 +14,10 @@ public class CQueryPnSNextPageAns {
 	private int clientid;
 	private int pnsid;
 	private int pnsgid;
-	private int index;
+	private char side;
 	private QueryPnSNextStatus status;
-	private ComStatus.ComMember[] list;
+	private int index;
+	private List<PubBookRow> list;
 	
 	public CQueryPnSNextPageAns(UUID requestid) {
 		this.messageid = "6008";
@@ -77,12 +80,21 @@ public class CQueryPnSNextPageAns {
 		this.status = status;
 	}
 
-	public ComStatus.ComMember[] getList() {
+	public char getSide() {
+		return side;
+	}
+
+	public void setSide(char side) {
+		this.side = side;
+	}
+
+	public List<PubBookRow> getList() {
 		return list;
 	}
 
-	public void setList(ComStatus.ComMember[] list) {
+	public void setList(List<PubBookRow> list) {
 		this.list = list;
 	}
+
 
 }

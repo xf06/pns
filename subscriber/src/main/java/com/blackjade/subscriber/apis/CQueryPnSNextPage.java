@@ -10,6 +10,7 @@ public class CQueryPnSNextPage {
 	private String messageid;
 	private UUID requestid;
 	private int clientid;
+	private char side;
 	private int pnsid;
 	private int pnsgid;
 	private int index;
@@ -17,11 +18,11 @@ public class CQueryPnSNextPage {
 	public CQueryPnSNextPage() {
 		this.messageid = "6007";
 	}
-	
+
 	public QueryPnSNextStatus reviewData() {
 		return ComStatus.QueryPnSNextStatus.SUCCESS;
 	}
-	
+
 	public String getMessageid() {
 		return messageid;
 	}
@@ -44,6 +45,14 @@ public class CQueryPnSNextPage {
 
 	public void setClientid(int clientid) {
 		this.clientid = clientid;
+	}
+
+	public char getSide() {
+		return side;
+	}
+
+	public void setSide(char side) {
+		this.side = side;
 	}
 
 	public int getPnsid() {

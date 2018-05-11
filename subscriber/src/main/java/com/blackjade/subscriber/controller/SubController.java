@@ -37,8 +37,8 @@ public class SubController {
 		
 		// construct ans
 		CQueryPnSTopPageAns ans = new CQueryPnSTopPageAns(qpns.getRequestid());
-		ans.setSide(qpns.getSide());
 		ans.setClientid(qpns.getClientid());
+		ans.setSide(qpns.getSide());
 		ans.setPnsgid(qpns.getPnsgid());
 		ans.setPnsid(qpns.getPnsid());		
 		//ans.setTotalnum(0);
@@ -69,7 +69,8 @@ public class SubController {
 		List<PubBookRow> elist = null; // java list container
 		
 		try {
-			elist  = this.pubbook.selectPubBookRow(qpns.getPnsgid(),qpns.getPnsid(),qpns.getSide(), 0); // top page
+			// top page (num=0)
+			elist  = this.pubbook.selectPubBookRow(qpns.getPnsgid(),qpns.getPnsid(),qpns.getSide(), 0); 
 			if(elist==null) {
 				ans.setTotalnum(totalnum);
 				ans.setStatus(ComStatus.QueryPnSTopStatus.PNS_DB_MISS);
@@ -96,16 +97,40 @@ public class SubController {
 	@RequestMapping(value = "/marketnext", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryPnSNextPageAns QueryPnSNextPage(@RequestBody CQueryPnSNextPage qpns) {		
-		
+
+		// check input msg 
 		QueryPnSNextStatus st = qpns.reviewData();
+		
 		// construct ans
 		CQueryPnSNextPageAns ans = new CQueryPnSNextPageAns(qpns.getRequestid());
+		
+		ans.setClientid(qpns.getClientid());
+		ans.setPnsgid(qpns.getPnsgid());
+		ans.setPnsid(qpns.getPnsid());
+		ans.setSide(qpns.getSide());
+		ans.setIndex(qpns.getIndex());
 		
 		if(st!=ComStatus.QueryPnSNextStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}
+						
+		List<PubBookRow> elist = null;
 		
+		try {
+			elist = this.pubbook.selectPubBookRow(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getIndex());
+			if(elist==null) {
+				ans.setStatus(ComStatus.QueryPnSNextStatus.PNS_EMPTY);
+				return ans;				
+			}
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.QueryPnSNextStatus.PNS_DB_MISS);
+			return ans;
+		}
+		
+		ans.setList(elist);
+		ans.setStatus(ComStatus.QueryPnSNextStatus.SUCCESS);
 		return ans;
 	}
 	

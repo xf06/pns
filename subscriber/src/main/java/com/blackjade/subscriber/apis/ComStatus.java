@@ -2,6 +2,37 @@ package com.blackjade.subscriber.apis;
 
 public class ComStatus {
 
+
+	public static enum QueryOwnTopStatus {
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_DB_MISS,
+		UNKNOWN
+	}
+
+	public static enum QueryOwnNextStatus {
+		SUCCESS, WRONG_MSGID
+	}
+
+	public static enum QueryPnSTopStatus {
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_EMPTY,
+		PNS_DB_MISS,
+		UNKNOWN,
+	}
+
+	public static enum QueryPnSNextStatus {
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_EMPTY,
+		PNS_DB_MISS,
+		UNKNOWN
+	}
+	
 	// {poid, price, quant, min, max, comment}
 	public static class ComMember {
 		private int poid;
@@ -52,29 +83,5 @@ public class ComStatus {
 
 	}
 
-	public static enum QueryOwnTopStatus {
-		SUCCESS, 
-		WRONG_MSGID,
-		INMSG_ERR,
-		PNS_DB_MISS,
-		UNKNOWN
-	}
-
-	public static enum QueryOwnNextStatus {
-		SUCCESS, WRONG_MSGID
-	}
-
-	public static enum QueryPnSTopStatus {
-		SUCCESS, 
-		WRONG_MSGID,
-		INMSG_ERR,
-		PNS_EMPTY,
-		PNS_DB_MISS,
-		UNKNOWN,
-	}
-
-	public static enum QueryPnSNextStatus {
-		SUCCESS, WRONG_MSGID
-	}
-
+	
 }
