@@ -15,6 +15,15 @@ public class ComStatus {
 		SUCCESS, WRONG_MSGID
 	}
 
+	public static enum QueryPnSStatus {
+		SUCCESS, 
+		WRONG_MSGID,
+		INMSG_ERR,
+		PNS_EMPTY,
+		PNS_DB_MISS,
+		UNKNOWN,
+	}
+	
 	public static enum QueryPnSTopStatus {
 		SUCCESS, 
 		WRONG_MSGID,

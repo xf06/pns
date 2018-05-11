@@ -2,10 +2,11 @@ package com.blackjade.subscriber.apis;
 
 import java.util.UUID;
 
-import com.blackjade.subscriber.apis.ComStatus.QueryOwnTopStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
 
-//cQueryOwnTopPage	0x6001	{requestid, clientid, pnsid, pnsgid, side}
-public class CQueryOwnTopPage {
+// QueryPnSPage	0x6021	{requestid, clientid, pnsid, pnsgid}
+
+public class CQueryPnSPage {
 
 	private String messageid;
 	private UUID requestid;
@@ -13,15 +14,15 @@ public class CQueryOwnTopPage {
 	private int pnsid;
 	private int pnsgid;
 	private char side;
-	
-	//private UUID pnsoid;
-	
-	public CQueryOwnTopPage() {
-		this.messageid = "6001";
+	private int start;
+	private int length;// not in use it must be 10
+
+	public CQueryPnSPage() {
+		this.messageid = "6021";
 	}
 
-	public QueryOwnTopStatus reviewData() {
-		return ComStatus.QueryOwnTopStatus.SUCCESS;
+	public QueryPnSStatus reviewData() {
+		return ComStatus.QueryPnSStatus.SUCCESS;
 	}
 
 	public String getMessageid() {
@@ -70,6 +71,22 @@ public class CQueryOwnTopPage {
 
 	public void setSide(char side) {
 		this.side = side;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 }

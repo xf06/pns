@@ -13,11 +13,14 @@ import com.blackjade.subscriber.apis.CQueryOwnTopPage;
 import com.blackjade.subscriber.apis.CQueryOwnTopPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSNextPage;
 import com.blackjade.subscriber.apis.CQueryPnSNextPageAns;
+import com.blackjade.subscriber.apis.CQueryPnSPage;
+import com.blackjade.subscriber.apis.CQueryPnSPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSTopPage;
 import com.blackjade.subscriber.apis.CQueryPnSTopPageAns;
 import com.blackjade.subscriber.apis.ComStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnTopStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSNextStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSTopStatus;
 import com.blackjade.subscriber.dao.PubBookDao;
 import com.blackjade.subscriber.domain.PubBookRow;
@@ -134,31 +137,89 @@ public class SubController {
 		return ans;
 	}
 	
-	@RequestMapping(value = "/ownords", method = RequestMethod.POST)
+	@RequestMapping(value = "/market", method = RequestMethod.POST)
+	@ResponseBody
+	public CQueryPnSPageAns QueryPnSPage(@RequestBody CQueryPnSPage qpns) {		
+
+		// check input msg 
+		QueryPnSStatus st = qpns.reviewData();
+		
+		// construct ans
+		CQueryPnSPageAns ans = new CQueryPnSPageAns(qpns.getRequestid());
+		
+		ans.setClientid(qpns.getClientid());
+		ans.setPnsgid(qpns.getPnsgid());
+		ans.setPnsid(qpns.getPnsid());
+		ans.setSide(qpns.getSide());
+		ans.setStart(qpns.getStart());
+		ans.setLength(qpns.getLength());
+		
+		if(st!=ComStatus.QueryPnSStatus.SUCCESS) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		List<PubBookRow> elist = null;
+		
+		try {
+			elist = this.pubbook.selectPubBookRow(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
+			if(elist==null) {
+				ans.setStatus(ComStatus.QueryPnSStatus.PNS_EMPTY);
+				return ans;				
+			}
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.QueryPnSStatus.PNS_DB_MISS);
+			return ans;
+		}
+		
+		ans.setData(elist);
+		ans.setStatus(ComStatus.QueryPnSStatus.SUCCESS);
+		return ans;
+	}
+		
+	
+	@RequestMapping(value = "/ownpnstop", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryOwnTopPageAns QueryOwnTopPage(@RequestBody CQueryOwnTopPage qpns) {		
 		
 		QueryOwnTopStatus st = qpns.reviewData();
 		// construct ans
 		CQueryOwnTopPageAns ans = new CQueryOwnTopPageAns(qpns.getRequestid());
-		
+		ans.setClientid(qpns.getClientid());
+		ans.setPnsgid(qpns.getPnsgid());
+		ans.setPnsid(qpns.getPnsid());
+		ans.setSide(qpns.getSide());
+						
 		if(st!=ComStatus.QueryOwnTopStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}
 		
+		int totalnum = 0;
+		try {
+			totalnum = this.pubbook.selectOwnNumPns(qpns.getClientid(), qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide());
+		}
+		catch(Exception e) {
+			
+			
+		}
+		
+		ans.setTotalnum(totalnum);
+		ans.setStatus(ComStatus.QueryOwnTopStatus.SUCCESS);
 		return ans;
 	}
 	
-	@RequestMapping(value = "/ownpns", method = RequestMethod.POST)
+	@RequestMapping(value = "/ownpnsnext", method = RequestMethod.POST)
 	@ResponseBody
-	public CQueryPnSTopPageAns QueryOwnNextPage(@RequestBody CQueryPnSTopPage qpns) {		
+	public CQueryOwnTopPageAns QueryOwnNextPage(@RequestBody CQueryOwnTopPage qpns) {		
 		
-		QueryPnSTopStatus st = qpns.reviewData();
+		QueryOwnTopStatus st = qpns.reviewData();
+		
 		// construct ans
-		CQueryPnSTopPageAns ans = new CQueryPnSTopPageAns(qpns.getRequestid());
+		CQueryOwnTopPageAns ans = new CQueryOwnTopPageAns(qpns.getRequestid());
 		
-		if(st!=ComStatus.QueryPnSTopStatus.SUCCESS) {
+		if(st!=ComStatus.QueryOwnTopStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}		
