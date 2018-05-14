@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blackjade.subscriber.apis.CQueryOwnPage;
+import com.blackjade.subscriber.apis.CQueryOwnPageAns;
 import com.blackjade.subscriber.apis.CQueryOwnTopPage;
 import com.blackjade.subscriber.apis.CQueryOwnTopPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSNextPage;
@@ -166,13 +167,13 @@ public class SubController {
 		try {
 			totalnum = this.pubbook.selectNumPns(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide());
 			if(totalnum==0) {
-				ans.setRecordsTotal(totalnum);
+				ans.setRecordsFiltered(totalnum);
 				ans.setStatus(ComStatus.QueryPnSStatus.PNS_EMPTY);				
 				return ans;
 			}			
 		}
 		catch(Exception e) {			
-			ans.setRecordsTotal(totalnum);
+			ans.setRecordsFiltered(totalnum);
 			ans.setStatus(ComStatus.QueryPnSStatus.PNS_DB_MISS);
 			return ans;
 		}
@@ -192,7 +193,7 @@ public class SubController {
 		}
 		
 		ans.setData(elist);
-		ans.setRecordsTotal(totalnum);
+		ans.setRecordsFiltered(totalnum);
 		ans.setStatus(ComStatus.QueryPnSStatus.SUCCESS);
 		return ans;
 	}
@@ -243,37 +244,56 @@ public class SubController {
 		}		
 		return ans;
 	}
-	/*
+	
 	public CQueryOwnPageAns QueryOwnPage(@RequestBody CQueryOwnPage qpns) {		
 		
 		QueryOwnStatus st = qpns.reviewData();
+		
 		// construct ans
-		CQueryOwnTopPageAns ans = new CQueryOwnTopPageAns(qpns.getRequestid());
+		CQueryOwnPageAns ans = new CQueryOwnPageAns(qpns.getRequestid());
 		ans.setClientid(qpns.getClientid());
 		ans.setPnsgid(qpns.getPnsgid());
 		ans.setPnsid(qpns.getPnsid());
 		ans.setSide(qpns.getSide());
-						
-		if(st!=ComStatus.QueryOwnStatus.SUCCESS) {
+		ans.setStart(qpns.getStart());
+		ans.setLength(qpns.getLength());
+		
+		if(st!=ComStatus.QueryOwnStatus.SUCCESS) {			
 			ans.setStatus(st);
 			return ans;
 		}
 		
+		// get number
 		int totalnum = 0;
 		try {
 			totalnum = this.pubbook.selectOwnNumPns(qpns.getClientid(), qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide());
+			if(totalnum==0) {
+				ans.setRecordsFiltered(totalnum);		
+				ans.setStatus(ComStatus.QueryOwnStatus.PNS_EMPTY);
+				return ans;
+			}
 		}
 		catch(Exception e) {
-		
+			ans.setRecordsFiltered(totalnum);		
+			ans.setStatus(ComStatus.QueryOwnStatus.PNS_DB_MISS);
+			return ans;
 		}
 		
-		ans.setTotalnum(totalnum);
-		ans.setStatus(ComStatus.QueryOwnTopStatus.SUCCESS);
-		return ans;
+		// getlist
+		List<PubBookRow> elist=null;
+		try {
+			//elist = this.pubbook
+		}
+		catch(Exception e) {
+			
+		}
 		
 		
+		ans.setRecordsFiltered(totalnum);		
+		ans.setStatus(ComStatus.QueryOwnStatus.SUCCESS);
 		return ans;
+		
 	}
-	*/
+	
 }
 

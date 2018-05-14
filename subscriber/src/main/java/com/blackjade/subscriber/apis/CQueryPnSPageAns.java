@@ -22,13 +22,13 @@ public class CQueryPnSPageAns {
 	private int length; // not in use, it must be 10
 
 	private QueryPnSStatus status;
-	private int recordsTotal;
+	private int recordsFiltered;
 	private List<PubBookRow> data;
 
 	public CQueryPnSPageAns(UUID requestid) {
 		this.messageid = "6022";
 		this.requestid = requestid;
-		this.data =  new ArrayList<PubBookRow>();
+		this.data = new ArrayList<PubBookRow>();
 	}
 
 	public String getMessageid() {
@@ -103,12 +103,12 @@ public class CQueryPnSPageAns {
 		this.status = status;
 	}
 
-	public int getRecordsTotal() {
-		return recordsTotal;
+	public int getRecordsFiltered() {
+		return recordsFiltered;
 	}
 
-	public void setRecordsTotal(int recordsTotal) {
-		this.recordsTotal = recordsTotal;
+	public void setRecordsFiltered(int recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
 	}
 
 	public List<PubBookRow> getData() {

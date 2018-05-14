@@ -15,6 +15,9 @@ public class CQueryOwnPage {
 	private int pnsgid;
 	private char side;
 
+	private int start;
+	private int length;
+
 	public CQueryOwnPage() {
 		this.messageid = "6023";
 	}
@@ -69,6 +72,22 @@ public class CQueryOwnPage {
 
 	public void setSide(char side) {
 		this.side = side;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 }

@@ -13,9 +13,12 @@ public class CQueryOwnTopPage {
 	private int pnsid;
 	private int pnsgid;
 	private char side;
-	
-	//private UUID pnsoid;
-	
+
+	private int start;
+	private int length;
+
+	// private UUID pnsoid;
+
 	public CQueryOwnTopPage() {
 		this.messageid = "6001";
 	}
@@ -70,6 +73,22 @@ public class CQueryOwnTopPage {
 
 	public void setSide(char side) {
 		this.side = side;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 }
