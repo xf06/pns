@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackjade.subscriber.dao.OrdBookDao">
+
+	<select id="selectNumPnsOrder" resultType="int">
+		SELECT COUNT(*) FROM
+		pns.orders a WHERE a.PNSOID=#{pnsoid} AND a.POID=#{poid} AND
+		a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND a.SIDE=#{side}
+	</select>
+
+	<select id="selectOrdBookRow" resultType="com.blackjade.subscriber.domain.OrdBookRow">
+		SELECT
+		TIMESTAMP,OID,CID,PRICE,QUANT,STATUS FROM pns.orders a WHERE
+		a.PNSOID=#{pnsoid}
+		AND a.POID=#{poid} AND a.SIDE=#{side} AND
+		a.PNSID=#{pnsid} AND a.PNSGID=#{pnsgid} AND
+		a.STATUS in
+		('DEALING','PAID','PAYCONFIRM','CANCELLED','DONE','REJECT_LOCK','REJECT_DONE','ERROR','UNKNOWN')
+		ORDER BY
+		a.TIMESTAMP ASC LIMIT #{num}, 10;
+	</select>
+
+</mapper>
+

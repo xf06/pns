@@ -23,9 +23,7 @@ public interface PubBookDao {
 			@Param(value = "side") char side, @Param(value = "num") int num); // num = pagenum*10
 
 	// select the N page list
-	public List<PubBookRow> selectPubBookRow(@Param(value = "poid") int poid, @Param(value = "pnsgid") int pnsgid,
-			@Param(value = "pnsid") int pnsid, @Param(value = "side") char side, @Param(value = "num") int num); 
+	public List<PubBookRow> selectOwnPubBookRow(@Param(value = "poid") int poid, @Param(value = "pnsgid") int pnsgid,
+			@Param(value = "pnsid") int pnsid, @Param(value = "side") char side, @Param(value = "num") int num);// num = pagenum*10
 	
-	// num = pagenum*10
-
 }
