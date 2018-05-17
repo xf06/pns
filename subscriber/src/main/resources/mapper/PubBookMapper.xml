@@ -3,8 +3,10 @@
 <mapper namespace="com.blackjade.subscriber.dao.PubBookDao">
 
 	<select id="selectNumPns" resultType="int">
-		SELECT COUNT(*) FROM pns.pns a WHERE
-		a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND a.SIDE=#{side} AND a.STATUS IN
+		SELECT COUNT(*) FROM
+		pns.pns a WHERE
+		a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND
+		a.SIDE=#{side} AND a.STATUS IN
 		('PUBLISHED', 'HALF_TRADED')
 	</select>
 
@@ -20,22 +22,26 @@
 		('PUBLISHED', 'HALF_TRADED') ORDER BY a.PRICE ASC LIMIT
 		#{num}, 10
 	</select>
-	
+
 	<select id="selectOwnNumPns" resultType="int">
-		SELECT COUNT(*) FROM pns.pns a WHERE
-		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND a.SIDE=#{side} 
+		SELECT COUNT(*) FROM
+		pns.pns a WHERE
+		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND
+		a.PNSID=#{pnsid} AND a.SIDE=#{side}
 	</select>
-	
-	<select id="selectOwnPubBookRow" resultType="com.blackjade.subscriber.domain.PubBookRow">
-		SELECT a.OID PNSOID,
-		a.POID,customer.USERNAME PONAME, a.PRICE, a.QUANT,
-		a.NET, a.MAX, a.MIN
-		FROM pns.pns a INNER JOIN crm.customer ON
-		a.POID=crm.customer.ID
-		WHERE
-		a.SIDE=#{side} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND
-		ORDER BY FIELD(noticeBy, 'PUBLISHED','HALF_TRADED','FULL_LOCKED','FULL_TRADED','CANCELLED','HALF_CANCELLED','UNKNOWN')
+
+	<select id="selectOwnBookRow" resultType="com.blackjade.subscriber.domain.OwnBookRow">
+
+		SELECT
+		PNSOID,POID,PRICE,QUANT,TRADED,MARGIN,NET,CAN,MAX,MIN,STATUS FROM
+		pns.pns a
+		WHERE a.POID=#{poid} a.SIDE=#{side} AND a.PNSGID=#{pnsgid}
+		AND
+		a.PNSID=#{pnsid}
+		ORDER BY
+		FIELD('PUBLISHED','HALF_TRADED','FULL_LOCKED','FULL_TRADED','CANCELLED','HALF_CANCELLED','UNKNOWN')
 		LIMIT #{num}, 10
+
 	</select>
 
 </mapper>

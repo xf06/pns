@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnStatus;
-import com.blackjade.subscriber.domain.PubBookRow;
+import com.blackjade.subscriber.domain.OwnBookRow;
 
 // QueryOwnPageAns	0x6024	{requestid, clientid, pnsid, pnsgid, status, list[]}	HTTP
 
@@ -22,7 +22,7 @@ public class CQueryOwnPageAns {
 
 	private QueryOwnStatus status;
 	private int recordsFiltered;
-	private List<PubBookRow> data;
+	private List<OwnBookRow> data;
 
 	public CQueryOwnPageAns(UUID requestid) {
 		this.messageid = "6022";
@@ -110,11 +110,11 @@ public class CQueryOwnPageAns {
 		this.recordsFiltered = recordsFiltered;
 	}
 
-	public List<PubBookRow> getData() {
+	public List<OwnBookRow> getData() {
 		return data;
 	}
 
-	public void setData(List<PubBookRow> data) {
+	public void setData(List<OwnBookRow> data) {
 		this.data = data;
 	}
 	

@@ -22,6 +22,7 @@ import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
 import com.blackjade.subscriber.dao.OrdBookDao;
 import com.blackjade.subscriber.dao.PubBookDao;
 import com.blackjade.subscriber.domain.OrdBookRow;
+import com.blackjade.subscriber.domain.OwnBookRow;
 import com.blackjade.subscriber.domain.PubBookRow;
 
 @RestController
@@ -130,9 +131,9 @@ public class SubController {
 		}
 		
 		// getlist
-		List<PubBookRow> elist=null;
+		List<OwnBookRow> elist=null;
 		try {
-			elist = this.pubbook.selectOwnPubBookRow(qpns.getClientid(), qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
+			elist = this.pubbook.selectOwnBookRow(qpns.getClientid(), qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
 			if(elist==null) {
 				ans.setStatus(ComStatus.QueryOwnStatus.PNS_DB_MISS);
 				return ans;
@@ -161,7 +162,7 @@ public class SubController {
 		// construct ans
 		CQueryPnSOrderAns ans = new CQueryPnSOrderAns(qpns.getRequestid());
 		ans.setClientid(qpns.getClientid());		
-		ans.setPnsgid(qpns.getPnsgid());
+		ans.setPnsgid(qpns.getPnsgid());   
 		ans.setPnsid(qpns.getPnsid());
 		
 		ans.setSide(qpns.getSide());
