@@ -35,7 +35,6 @@ public class SubController {
 	private OrdBookDao ordbook;
 	
 	
-	
 	@RequestMapping(value = "/market", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryPnSPageAns QueryPnSPage(@RequestBody CQueryPnSPage qpns) {		

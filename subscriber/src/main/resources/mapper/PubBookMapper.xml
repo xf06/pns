@@ -33,9 +33,9 @@
 	<select id="selectOwnBookRow" resultType="com.blackjade.subscriber.domain.OwnBookRow">
 
 		SELECT
-		PNSOID,POID,PRICE,QUANT,TRADED,MARGIN,NET,CAN,MAX,MIN,STATUS FROM
+		OID PNSOID,POID,PRICE,QUANT,TRADED,MARGIN,NET,CAN,MAX,MIN,STATUS FROM
 		pns.pns a
-		WHERE a.POID=#{poid} a.SIDE=#{side} AND a.PNSGID=#{pnsgid}
+		WHERE a.POID=#{poid} AND a.SIDE=#{side} AND a.PNSGID=#{pnsgid}
 		AND
 		a.PNSID=#{pnsid}
 		ORDER BY
