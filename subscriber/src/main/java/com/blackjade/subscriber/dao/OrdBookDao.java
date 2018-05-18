@@ -15,7 +15,13 @@ public interface OrdBookDao {
 			@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid, @Param(value = "side") char side);
 
 	// select Deals of a Pub
-	public List<OrdBookRow> selectOrdBookRow(@Param(value = "poid") int poid, @Param(value = "pnsgid") int pnsgid,
-			@Param(value = "pnsid") int pnsid, @Param(value = "side") char side, @Param(value = "num") int num);// num =
-																												// pagenum*10
+	public List<OrdBookRow> selectOrdBookRow(@Param(value = "pnsoid") String pnsoid, @Param(value = "poid") int poid,
+			@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid, @Param(value = "side") char side,
+			@Param(value = "num") int num);// num = pagenum*10
+
+	// select a deal from oid
+	public OrdBookRow selectOwnOrd(@Param(value = "oid") String oid, @Param(value = "cid") int cid,
+			@Param(value = "pnsoid") String pnsoid, @Param(value = "poid") int poid,
+			@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid, @Param(value = "side") char side);
+
 }

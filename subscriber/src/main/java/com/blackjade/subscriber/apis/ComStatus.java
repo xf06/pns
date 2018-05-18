@@ -4,6 +4,15 @@ public class ComStatus {
 
 	//------------------- New APIs --------------------------//
 	
+	public static enum QueryOwnOrdStatus{
+		SUCCESS,
+		WRONG_MSGID,
+		INMSG_ERR,
+		ORD_DB_EMPTY,
+		ORD_DB_MISS,
+		UNKNOWN,
+	}
+	
 	public static enum QueryPnSStatus {
 		SUCCESS, 
 		WRONG_MSGID,

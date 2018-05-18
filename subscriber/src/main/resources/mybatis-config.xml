@@ -15,6 +15,7 @@
 	
 	<mappers>
 		<mapper resource="mapper/PubBookMapper.xml" />
+		<mapper resource="mapper/OrdBookMapper.xml" />
 	</mappers>
 	
 </configuration>
