@@ -1,10 +1,10 @@
 package com.blackjade.subscriber.domain;
 
-public class AllOrdSentRow {
+public class AllOrdRecvRow {
 
 	private long timestamp;
 	private String oid;
-	private int poid;
+	private int cid;
 	private char side;
 	private long price;
 	private long quant;
@@ -26,12 +26,12 @@ public class AllOrdSentRow {
 		this.oid = oid;
 	}
 
-	public int getPoid() {
-		return poid;
+	public int getCid() {
+		return cid;
 	}
 
-	public void setPoid(int poid) {
-		this.poid = poid;
+	public void setCid(int cid) {
+		this.cid = cid;
 	}
 
 	public char getSide() {

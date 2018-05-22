@@ -6,15 +6,17 @@ import java.util.UUID;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdRecvStatus;
 import com.blackjade.subscriber.domain.AllOrdSentRow;
 
+// 0x602E	{requestid, clientid, pnsid, pnsgid, status, list[]}
+
 public class CQueryAllOrdRecvAns {
 
 	private String messageid;
 	private UUID requestid;
-	private int clientid; // this is poid
-	private int pnsgid;
-	private int pnsid;
-	private int start;
-	private int length; // always 10
+	private int clientid; 	// this is poid
+	private int pnsgid;		//
+	private int pnsid;		//
+	private int start;		//
+	private int length; 	// always 10
 
 	private QueryAllOrdRecvStatus status;
 	private int recordsFiltered;
@@ -22,6 +24,7 @@ public class CQueryAllOrdRecvAns {
 
 	public CQueryAllOrdRecvAns(UUID requestid) {
 		this.requestid = requestid;
+		this.messageid = "602E";
 	}
 
 	public String getMessageid() {
@@ -103,5 +106,7 @@ public class CQueryAllOrdRecvAns {
 	public void setData(List<AllOrdSentRow> data) {
 		this.data = data;
 	}
-
 }
+
+
+

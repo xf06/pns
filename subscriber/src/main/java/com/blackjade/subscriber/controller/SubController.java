@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blackjade.subscriber.apis.CQueryAllOrdRecv;
+import com.blackjade.subscriber.apis.CQueryAllOrdRecvAns;
 import com.blackjade.subscriber.apis.CQueryAllOrdSent;
 import com.blackjade.subscriber.apis.CQueryAllOrdSentAns;
 import com.blackjade.subscriber.apis.CQueryOwnOrd;
@@ -20,6 +22,7 @@ import com.blackjade.subscriber.apis.CQueryPnSOrderAns;
 import com.blackjade.subscriber.apis.CQueryPnSPage;
 import com.blackjade.subscriber.apis.CQueryPnSPageAns;
 import com.blackjade.subscriber.apis.ComStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdRecvStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdSentStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnStatus;
@@ -337,6 +340,41 @@ public class SubController {
 		return ans;
 	}
 	
+	@RequestMapping(value = "/allordrecv", method = RequestMethod.POST)
+	@ResponseBody
+	public CQueryAllOrdRecvAns QueryAllOrdRecv(@RequestBody CQueryAllOrdRecv qaor) {
+		
+		QueryAllOrdRecvStatus st = qaor.reviewData();
+		
+		CQueryAllOrdRecvAns ans = new CQueryAllOrdRecvAns(qaor.getRequestid());
+		
+		ans.setClientid(qaor.getClientid());		
+		ans.setPnsgid(qaor.getPnsgid());
+		ans.setPnsid(qaor.getPnsid());		
+		ans.setStart(qaor.getStart());
+		ans.setLength(10);
+				
+		if(st!=ComStatus.QueryAllOrdRecvStatus.SUCCESS) {			
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		// select the num of ord that recv
+		int num=0;
+		try {
+			
+		}
+		catch(Exception e) {
+			
+		}
+		
+		// select the list of ord that recv
+		List<>
+		
+		
+		
+		return ans;
+	}
 }
 
 
