@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdRecvStatus;
-import com.blackjade.subscriber.domain.AllOrdSentRow;
+import com.blackjade.subscriber.domain.AllOrdRecvRow;
 
 // 0x602E	{requestid, clientid, pnsid, pnsgid, status, list[]}
 
@@ -20,7 +20,7 @@ public class CQueryAllOrdRecvAns {
 
 	private QueryAllOrdRecvStatus status;
 	private int recordsFiltered;
-	private List<AllOrdSentRow> data;
+	private List<AllOrdRecvRow> data;
 
 	public CQueryAllOrdRecvAns(UUID requestid) {
 		this.requestid = requestid;
@@ -99,11 +99,11 @@ public class CQueryAllOrdRecvAns {
 		this.recordsFiltered = recordsFiltered;
 	}
 
-	public List<AllOrdSentRow> getData() {
+	public List<AllOrdRecvRow> getData() {
 		return data;
 	}
 
-	public void setData(List<AllOrdSentRow> data) {
+	public void setData(List<AllOrdRecvRow> data) {
 		this.data = data;
 	}
 }

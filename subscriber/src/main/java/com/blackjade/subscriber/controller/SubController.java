@@ -30,6 +30,7 @@ import com.blackjade.subscriber.apis.ComStatus.QueryPnSOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
 import com.blackjade.subscriber.dao.OrdBookDao;
 import com.blackjade.subscriber.dao.PubBookDao;
+import com.blackjade.subscriber.domain.AllOrdRecvRow;
 import com.blackjade.subscriber.domain.AllOrdSentRow;
 import com.blackjade.subscriber.domain.OrdBookRow;
 import com.blackjade.subscriber.domain.OwnBookRow;
@@ -362,17 +363,33 @@ public class SubController {
 		// select the num of ord that recv
 		int num=0;
 		try {
-			
+			num =  this.ordbook.selectNumAllOrdRecv(qaor.getClientid(), qaor.getPnsgid(),qaor.getPnsid());
+			if(num==0) {
+				ans.setRecordsFiltered(num);
+				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_EMPTY);
+			}
 		}
 		catch(Exception e) {
-			
+			ans.setRecordsFiltered(0);
+			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
 		}
 		
 		// select the list of ord that recv
-		List<>
+		List<AllOrdRecvRow> elist = null;  
+		try {
+			elist = this.ordbook.selectAllOrdRecv(qaor.getClientid(),qaor.getPnsgid(),qaor.getPnsid(),qaor.getStart());
+			if(elist==null) {
+				ans.setRecordsFiltered(0);
+				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
+			}
+		}
+		catch(Exception e) {
+			ans.setRecordsFiltered(0);
+			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
+		}
 		
-		
-		
+		ans.setRecordsFiltered(num);
+		ans.setStatus(ComStatus.QueryAllOrdRecvStatus.SUCCESS);
 		return ans;
 	}
 }
