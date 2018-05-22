@@ -178,14 +178,16 @@ public class TService {
 
 		OrderRow ordrow = null;
 		try {
-			this.ord.selectOrder(paid.getOid().toString());// select for update
+			ordrow = this.ord.selectOrder(paid.getOid().toString());// select for update
 		} finally {
 			if (ordrow == null)
 				return ComStatus.PaidStatus.ORD_MISS_MATCH;
 		}
 
-		// check input
-		if (!ordrow.getOid().equals(paid.getPnsoid().toString()))
+		// check input		
+		if (!ordrow.getOid().equals(paid.getOid().toString()))
+			return ComStatus.PaidStatus.ORD_MISS_MATCH;
+		if (!ordrow.getPnsoid().equals(paid.getPnsoid().toString()))
 			return ComStatus.PaidStatus.ORD_MISS_MATCH;
 		if (ordrow.getPnsid() != paid.getPnsid())
 			return ComStatus.PaidStatus.ORD_MISS_MATCH;
@@ -193,7 +195,7 @@ public class TService {
 			return ComStatus.PaidStatus.ORD_MISS_MATCH;
 		if (ordrow.getPoid() != paid.getPoid())
 			return ComStatus.PaidStatus.ORD_MISS_MATCH;
-		if (ordrow.getSide() == paid.getSide()) // B<->S //S<->B // side checking //need some work here
+		if (ordrow.getSide() != paid.getSide()) // B<->S //S<->B // side checking //need some work here
 			return ComStatus.PaidStatus.ORD_MISS_MATCH;
 
 		// check data corruption

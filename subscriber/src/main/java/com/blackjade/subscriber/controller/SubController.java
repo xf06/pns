@@ -1,7 +1,6 @@
 package com.blackjade.subscriber.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blackjade.subscriber.apis.CQueryAllOrdSent;
+import com.blackjade.subscriber.apis.CQueryAllOrdSentAns;
 import com.blackjade.subscriber.apis.CQueryOwnOrd;
 import com.blackjade.subscriber.apis.CQueryOwnOrdAns;
 import com.blackjade.subscriber.apis.CQueryOwnPage;
@@ -19,12 +20,14 @@ import com.blackjade.subscriber.apis.CQueryPnSOrderAns;
 import com.blackjade.subscriber.apis.CQueryPnSPage;
 import com.blackjade.subscriber.apis.CQueryPnSPageAns;
 import com.blackjade.subscriber.apis.ComStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdSentStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
 import com.blackjade.subscriber.dao.OrdBookDao;
 import com.blackjade.subscriber.dao.PubBookDao;
+import com.blackjade.subscriber.domain.AllOrdSentRow;
 import com.blackjade.subscriber.domain.OrdBookRow;
 import com.blackjade.subscriber.domain.OwnBookRow;
 import com.blackjade.subscriber.domain.PubBookRow;
@@ -227,7 +230,7 @@ public class SubController {
 
 	@RequestMapping(value = "/ownord", method = RequestMethod.POST)
 	@ResponseBody
-	public CQueryOwnOrdAns QueryOwnOrd(CQueryOwnOrd qord) {
+	public CQueryOwnOrdAns QueryOwnOrd(@RequestBody CQueryOwnOrd qord) {
 		
 		// check input
 		QueryOwnOrdStatus st = qord.reviewData();
@@ -262,6 +265,7 @@ public class SubController {
 			}
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
 			return ans;			
 		}
@@ -271,7 +275,72 @@ public class SubController {
 		return ans;
 	}
 
+	@RequestMapping(value = "/allordsent", method = RequestMethod.POST)
+	@ResponseBody
+	public CQueryAllOrdSentAns QueryAllOrdSent(@RequestBody CQueryAllOrdSent qaos) {
+		
+		// input review data 
+		QueryAllOrdSentStatus st = qaos.reviewData();
+		
+		// construct output ans
+		CQueryAllOrdSentAns ans = new CQueryAllOrdSentAns(qaos.getRequestid());
+		ans.setPnsgid(qaos.getPnsgid());
+		ans.setPnsid(qaos.getPnsid());
+		ans.setCid(qaos.getCid());
+		ans.setStart(qaos.getStart());
+		ans.setLength(10);
+		
+		
+		if(st!=ComStatus.QueryAllOrdSentStatus.SUCCESS) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		// select the number of ord that sent
+		int num = 0;		
+		try {
+			num = this.ordbook.selectNumAllOrdSent(qaos.getCid(), qaos.getPnsgid(),qaos.getPnsid());
+			if(num==0) {
+				ans.setRecordsFiltered(num);
+				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_EMPTY);
+				return ans;
+			}
+		}
+		catch(Exception e) {			
+			ans.setRecordsFiltered(num);
+			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
+			return ans;
+		}	
+		
+		// select the list of ord that sent
+		List<AllOrdSentRow> elist = null;
+		try {
+			elist = this.ordbook.selectAllOrdSent(qaos.getCid(), qaos.getPnsgid(), qaos.getPnsid(), qaos.getStart());
+			if(elist==null) {
+				ans.setRecordsFiltered(0);
+				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
+				return ans; 
+			}
+			 
+		}
+		catch(Exception e)
+		{
+			ans.setRecordsFiltered(0);
+			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
+			return ans; 
+		}
+		
+		ans.setRecordsFiltered(num);
+		ans.setData(elist);
+		ans.setStatus(ComStatus.QueryAllOrdSentStatus.SUCCESS);
+
+		return ans;
+	}
+	
 }
+
+
+
 
 /*
  * @RequestMapping(value = "/markettop", method = RequestMethod.POST)

@@ -14,11 +14,14 @@
 	</insert>
 
 	<select id="selectOrder" parameterType="String" resultType="com.blackjade.publisher.domain.OrderRow">
-		SELECT FROM pns.orders a WHERE a.OID=#{oid} FOR UPDATE
+		SELECT * FROM pns.orders a WHERE a.OID=#{oid} FOR UPDATE
 	</select>
 
+
+
+
 	<update id="updateOrderStatus">
-		UPDATE pns.orders a SET a.STATUS=#{status}, WHERE a.OID=#{oid}
+		UPDATE pns.orders a SET a.STATUS=#{status} WHERE a.OID=#{oid}
 	</update>
 
 </mapper>
