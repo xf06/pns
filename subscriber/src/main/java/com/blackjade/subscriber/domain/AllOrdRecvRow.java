@@ -5,6 +5,7 @@ public class AllOrdRecvRow {
 	private long timestamp;
 	private String oid;
 	private int cid;
+	private String pnsoid;
 	private char side;
 	private long price;
 	private long quant;
@@ -32,6 +33,14 @@ public class AllOrdRecvRow {
 
 	public void setCid(int cid) {
 		this.cid = cid;
+	}
+
+	public String getPnsoid() {
+		return pnsoid;
+	}
+
+	public void setPnsoid(String pnsoid) {
+		this.pnsoid = pnsoid;
 	}
 
 	public char getSide() {

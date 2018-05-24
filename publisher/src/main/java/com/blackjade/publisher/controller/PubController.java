@@ -281,6 +281,7 @@ public class PubController {
 			return ans;
 		}
 		catch(Exception e) {
+			
 			ans.setStatus(ComStatus.CancelStatus.valueOf(e.getMessage()));
 			return ans;
 		}

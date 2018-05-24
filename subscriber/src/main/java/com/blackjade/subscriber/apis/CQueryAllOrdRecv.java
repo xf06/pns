@@ -16,7 +16,8 @@ public class CQueryAllOrdRecv {
 	private int length; // always 10
 
 	public QueryAllOrdRecvStatus reviewData() {
-		if (!this.messageid.equals("602D"))
+		
+		if (!("602D").equals(this.messageid))
 			return ComStatus.QueryAllOrdRecvStatus.INMSG_ERR;
 
 		return ComStatus.QueryAllOrdRecvStatus.SUCCESS;

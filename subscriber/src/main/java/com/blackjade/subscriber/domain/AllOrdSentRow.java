@@ -4,6 +4,7 @@ public class AllOrdSentRow {
 
 	private long timestamp;
 	private String oid;
+	private String pnsoid;
 	private int poid;
 	private char side;
 	private long price;
@@ -24,6 +25,14 @@ public class AllOrdSentRow {
 
 	public void setOid(String oid) {
 		this.oid = oid;
+	}
+
+	public String getPnsoid() {
+		return pnsoid;
+	}
+
+	public void setPnsoid(String pnsoid) {
+		this.pnsoid = pnsoid;
 	}
 
 	public int getPoid() {

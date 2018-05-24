@@ -91,7 +91,7 @@ public class TService {
 		long net = pnsrow.getNet();
 		String oid = pnsrow.getOid();
 
-		if (quant != margin + traded + net)
+		if (quant != margin + traded + net)//can should be involved as well
 			return ComStatus.DealStatus.PNS_DATA_MESS;// should send alarm to monitor as well
 
 		// pns status are not final {#PUBLISHED, #HALF_TRADED}
@@ -257,19 +257,7 @@ public class TService {
 		// update order status from Paid->PayConfirmed
 		// 1 select if the order is what it is
 		// 2 check status
-
-		int retcode = 0;
-		try {
-			retcode = this.ord.updateOrderStatus(paycon.getOid().toString(),
-					ComStatus.OrderStatus.PAYCONFIRM.toString());
-		} catch (Exception e) {
-			// logging data
-		} finally {
-			if (retcode == 0) {
-				return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
-			}
-		}
-
+		
 		// update PnS from margin->traded
 		PnSRow pnsrow = this.pns.selectPnSRowOid(paycon.getPnsoid().toString());
 		if (pnsrow == null)
@@ -391,6 +379,19 @@ public class TService {
 			} catch (Exception e) {
 				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
 			}
+			
+			int retcode = 0;
+			try {
+				retcode = this.ord.updateOrderStatus(paycon.getOid().toString(),
+						ComStatus.OrderStatus.PAYCONFIRM.toString());
+			} catch (Exception e) {
+				// logging data
+			} finally {
+				if (retcode == 0) {
+					return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
+				}
+			}
+			
 			return ComStatus.PayConfirmStatus.SUCCESS;
 		}
 
@@ -414,6 +415,18 @@ public class TService {
 					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
 			} catch (Exception e) {
 				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
+			}
+			
+			int retcode = 0;
+			try {
+				retcode = this.ord.updateOrderStatus(paycon.getOid().toString(),
+						ComStatus.OrderStatus.PAYCONFIRM.toString());
+			} catch (Exception e) {
+				// logging data
+			} finally {
+				if (retcode == 0) {
+					return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
+				}
 			}
 			return ComStatus.PayConfirmStatus.SUCCESS;
 		}

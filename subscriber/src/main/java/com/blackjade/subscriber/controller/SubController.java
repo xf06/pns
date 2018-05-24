@@ -235,10 +235,10 @@ public class SubController {
 	@RequestMapping(value = "/ownord", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryOwnOrdAns QueryOwnOrd(@RequestBody CQueryOwnOrd qord) {
-		
+
 		// check input
 		QueryOwnOrdStatus st = qord.reviewData();
-		
+
 		// construct ans
 		CQueryOwnOrdAns ans = new CQueryOwnOrdAns(qord.getRequestid());
 		ans.setPnsgid(qord.getPnsgid());
@@ -246,34 +246,28 @@ public class SubController {
 		ans.setPnsoid(qord.getPnsoid());
 		ans.setPoid(qord.getPoid());
 		ans.setSide(qord.getSide());
-		
-		if(st!=ComStatus.QueryOwnOrdStatus.SUCCESS) {
+
+		if (st != ComStatus.QueryOwnOrdStatus.SUCCESS) {
 			ans.setStatus(ComStatus.QueryOwnOrdStatus.INMSG_ERR);
 			return ans;
 		}
-					
+
 		// get obr from database
-		OrdBookRow obr = null;		
+		OrdBookRow obr = null;
 		try {
-			obr = this.ordbook.selectOwnOrd(qord.getOid().toString(),
-											qord.getCid(),
-											qord.getPnsoid().toString(),
-											qord.getPoid(),
-											qord.getPnsgid(), 
-											qord.getPnsid(), 
-											qord.getSide());
-			
-			if(obr==null) {
+			obr = this.ordbook.selectOwnOrd(qord.getOid().toString(), qord.getCid(), qord.getPnsoid().toString(),
+					qord.getPoid(), qord.getPnsgid(), qord.getPnsid(), qord.getSide());
+
+			if (obr == null) {
 				ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_EMPTY);
 				return ans;
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
-			return ans;			
+			return ans;
 		}
-		
+
 		ans.setOrd(obr);
 		ans.setStatus(ComStatus.QueryOwnOrdStatus.SUCCESS);
 		return ans;
@@ -282,10 +276,10 @@ public class SubController {
 	@RequestMapping(value = "/allordsent", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryAllOrdSentAns QueryAllOrdSent(@RequestBody CQueryAllOrdSent qaos) {
-		
-		// input review data 
+
+		// input review data
 		QueryAllOrdSentStatus st = qaos.reviewData();
-		
+
 		// construct output ans
 		CQueryAllOrdSentAns ans = new CQueryAllOrdSentAns(qaos.getRequestid());
 		ans.setPnsgid(qaos.getPnsgid());
@@ -293,107 +287,102 @@ public class SubController {
 		ans.setCid(qaos.getCid());
 		ans.setStart(qaos.getStart());
 		ans.setLength(10);
-		
-		
-		if(st!=ComStatus.QueryAllOrdSentStatus.SUCCESS) {
+
+		if (st != ComStatus.QueryAllOrdSentStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}
-		
+
 		// select the number of ord that sent
-		int num = 0;		
+		int num = 0;
 		try {
-			num = this.ordbook.selectNumAllOrdSent(qaos.getCid(), qaos.getPnsgid(),qaos.getPnsid());
-			if(num==0) {
+			num = this.ordbook.selectNumAllOrdSent(qaos.getCid(), qaos.getPnsgid(), qaos.getPnsid());
+			if (num == 0) {
 				ans.setRecordsFiltered(num);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_EMPTY);
 				return ans;
 			}
-		}
-		catch(Exception e) {			
+		} catch (Exception e) {
 			ans.setRecordsFiltered(num);
 			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
 			return ans;
-		}	
-		
+		}
+
 		// select the list of ord that sent
 		List<AllOrdSentRow> elist = null;
 		try {
 			elist = this.ordbook.selectAllOrdSent(qaos.getCid(), qaos.getPnsgid(), qaos.getPnsid(), qaos.getStart());
-			if(elist==null) {
+			if (elist == null) {
 				ans.setRecordsFiltered(0);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
-				return ans; 
+				return ans;
 			}
-			 
-		}
-		catch(Exception e)
-		{
+
+		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
-			return ans; 
+			return ans;
 		}
-		
+
 		ans.setRecordsFiltered(num);
 		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryAllOrdSentStatus.SUCCESS);
 
 		return ans;
 	}
-	
+
 	@RequestMapping(value = "/allordrecv", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryAllOrdRecvAns QueryAllOrdRecv(@RequestBody CQueryAllOrdRecv qaor) {
-		
+
 		QueryAllOrdRecvStatus st = qaor.reviewData();
-		
+
 		CQueryAllOrdRecvAns ans = new CQueryAllOrdRecvAns(qaor.getRequestid());
-		
-		ans.setClientid(qaor.getClientid());		
+
+		ans.setClientid(qaor.getClientid());
 		ans.setPnsgid(qaor.getPnsgid());
-		ans.setPnsid(qaor.getPnsid());		
+		ans.setPnsid(qaor.getPnsid());
 		ans.setStart(qaor.getStart());
 		ans.setLength(10);
-				
-		if(st!=ComStatus.QueryAllOrdRecvStatus.SUCCESS) {			
+
+		if (st != ComStatus.QueryAllOrdRecvStatus.SUCCESS) {
 			ans.setStatus(st);
 			return ans;
 		}
-		
+
 		// select the num of ord that recv
-		int num=0;
+		int num = 0;
 		try {
-			num =  this.ordbook.selectNumAllOrdRecv(qaor.getClientid(), qaor.getPnsgid(),qaor.getPnsid());
-			if(num==0) {
+			num = this.ordbook.selectNumAllOrdRecv(qaor.getClientid(), qaor.getPnsgid(), qaor.getPnsid());
+			if (num == 0) {
 				ans.setRecordsFiltered(num);
 				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_EMPTY);
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
 		}
-		
+
 		// select the list of ord that recv
-		List<AllOrdRecvRow> elist = null;  
+		List<AllOrdRecvRow> elist = null;
 		try {
-			elist = this.ordbook.selectAllOrdRecv(qaor.getClientid(),qaor.getPnsgid(),qaor.getPnsid(),qaor.getStart());
-			if(elist==null) {
+			elist = this.ordbook.selectAllOrdRecv(qaor.getClientid(), qaor.getPnsgid(), qaor.getPnsid(),
+					qaor.getStart());
+			if (elist == null) {
 				ans.setRecordsFiltered(0);
 				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
 		}
-		
+
 		ans.setRecordsFiltered(num);
+		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryAllOrdRecvStatus.SUCCESS);
 		return ans;
 	}
 }
-
 
 
 

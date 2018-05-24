@@ -36,23 +36,23 @@
 
 	<select id="selectNumAllOrdSent" resultType="int">
 		SELECT
-		TIMESTAMP,OID,POID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
+		COUNT(*) FROM pns.orders a WHERE
 		a.CID=#{cid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid}
 	</select>
 
 	<select id="selectAllOrdSent" resultType="com.blackjade.subscriber.domain.AllOrdSentRow">
-		SELECT TIMESTAMP,OID,POID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
+		SELECT TIMESTAMP,OID,PNSOID,POID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
 		a.CID=#{cid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;
 	</select>
 		
 	<select id="selectNumAllOrdRecv" resultType="int">
 		SELECT
-		TIMESTAMP,OID,SIDE,CID,PRICE,QUANT,STATUS FROM pns.orders a WHERE
+		COUNT(*) FROM pns.orders a WHERE
 		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid}
 	</select>
 
 	<select id="selectAllOrdRecv" resultType="com.blackjade.subscriber.domain.AllOrdRecvRow">
-		SELECT TIMESTAMP,OID,CID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
+		SELECT TIMESTAMP,OID,CID,PNSOID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
 		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;
 	</select>
 		
