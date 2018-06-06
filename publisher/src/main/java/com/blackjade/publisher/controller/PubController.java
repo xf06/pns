@@ -216,8 +216,8 @@ public class PubController {
 		ans.setOid(paycon.getOid()); 			// deal orderid
 		ans.setSide(paycon.getSide()); 			// deal side
 		
-		ans.setPoid(paycon.getPoid());			// deal side
-		ans.setPnsoid(paycon.getPnsoid());						// deal side
+		ans.setCid(paycon.getCid());			// deal side
+		ans.setPnsoid(paycon.getPnsoid());		// deal side
 		
 		ans.setPnsid(paycon.getPnsid());		// deal side
 		ans.setPnsgid(paycon.getPnsgid());		// deal side

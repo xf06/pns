@@ -313,7 +313,7 @@ public class TService {
 		if (ordrow.getPnsid() != paycon.getPnsid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 
-		if (ordrow.getPoid() != paycon.getPoid())
+		if (ordrow.getPoid() != paycon.getClientid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 
 		if (ordrow.getPrice() != paycon.getPrice())

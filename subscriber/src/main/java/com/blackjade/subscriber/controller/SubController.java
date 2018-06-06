@@ -53,6 +53,7 @@ public class SubController {
 	@Autowired
 	private AccBookDao accbook;
 	
+	
 	@RequestMapping(value = "/market", method = RequestMethod.POST)
 	@ResponseBody
 
@@ -392,7 +393,7 @@ public class SubController {
 		return ans;
 	}
 
-	// the ACC query 
+	// ----------- the ACC query ---------------//
 	@RequestMapping(value = "/ownacc", method = RequestMethod.POST)
 	@ResponseBody
 	public CQueryOwnAccPageAns QueryOwnAccPage(@RequestBody CQueryOwnAccPage qacc) {
@@ -454,7 +455,6 @@ public class SubController {
 	}
 	
 }
-
 
 
 /*
