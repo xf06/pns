@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackjade.subscriber.dao.AccBookDao">
+
+	<select id="selectAccBookNum" resultType="int">
+		SELECT COUNT(*) FROM crm.cacc a WHERE a.CID=#{cid}
+	</select>
+
+	<select id="selectAccBookRows" resultType="com.blackjade.subscriber.domain.OwnAccRow">
+		SELECT
+		PNSGID,PNSID,MARGIN,FREEMARGIN FROM crm.cacc a WHERE
+		a.CID=#{cid}
+		ORDER BY
+		a.BALANCE DESC LIMIT #{num}, 20;
+	</select>
+	
+</mapper>
+	

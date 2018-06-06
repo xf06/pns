@@ -12,10 +12,12 @@
 <configuration>
 	<typeAliases>
 	</typeAliases>
-	
+
 	<mappers>
 		<mapper resource="mapper/PubBookMapper.xml" />
 		<mapper resource="mapper/OrdBookMapper.xml" />
+		<mapper resource="mapper/AccBookMapper.xml" />
 	</mappers>
-	
+
+
 </configuration>

@@ -13,6 +13,8 @@ import com.blackjade.subscriber.apis.CQueryAllOrdRecv;
 import com.blackjade.subscriber.apis.CQueryAllOrdRecvAns;
 import com.blackjade.subscriber.apis.CQueryAllOrdSent;
 import com.blackjade.subscriber.apis.CQueryAllOrdSentAns;
+import com.blackjade.subscriber.apis.CQueryOwnAccPage;
+import com.blackjade.subscriber.apis.CQueryOwnAccPageAns;
 import com.blackjade.subscriber.apis.CQueryOwnOrd;
 import com.blackjade.subscriber.apis.CQueryOwnOrdAns;
 import com.blackjade.subscriber.apis.CQueryOwnPage;
@@ -24,15 +26,18 @@ import com.blackjade.subscriber.apis.CQueryPnSPageAns;
 import com.blackjade.subscriber.apis.ComStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdRecvStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdSentStatus;
+import com.blackjade.subscriber.apis.ComStatus.QueryOwnAccStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryOwnStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSOrdStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryPnSStatus;
+import com.blackjade.subscriber.dao.AccBookDao;
 import com.blackjade.subscriber.dao.OrdBookDao;
 import com.blackjade.subscriber.dao.PubBookDao;
 import com.blackjade.subscriber.domain.AllOrdRecvRow;
 import com.blackjade.subscriber.domain.AllOrdSentRow;
 import com.blackjade.subscriber.domain.OrdBookRow;
+import com.blackjade.subscriber.domain.OwnAccRow;
 import com.blackjade.subscriber.domain.OwnBookRow;
 import com.blackjade.subscriber.domain.PubBookRow;
 
@@ -45,8 +50,12 @@ public class SubController {
 	@Autowired
 	private OrdBookDao ordbook;
 
+	@Autowired
+	private AccBookDao accbook;
+	
 	@RequestMapping(value = "/market", method = RequestMethod.POST)
 	@ResponseBody
+
 	public CQueryPnSPageAns QueryPnSPage(@RequestBody CQueryPnSPage qpns) {
 
 		// check input msg
@@ -382,6 +391,68 @@ public class SubController {
 		ans.setStatus(ComStatus.QueryAllOrdRecvStatus.SUCCESS);
 		return ans;
 	}
+
+	// the ACC query 
+	@RequestMapping(value = "/ownacc", method = RequestMethod.POST)
+	@ResponseBody
+	public CQueryOwnAccPageAns QueryOwnAccPage(@RequestBody CQueryOwnAccPage qacc) {
+		
+		// review income data
+		QueryOwnAccStatus st = qacc.reviewData();
+		
+		// construct ans
+		CQueryOwnAccPageAns ans = new CQueryOwnAccPageAns(qacc.getRequestid());
+		
+		ans.setClientid(qacc.getClientid());				
+		ans.setStart(qacc.getStart());
+		ans.setLength(20);
+		
+		// this is from select
+		
+		if(ComStatus.QueryOwnAccStatus.SUCCESS!=st) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		int num=0;		
+		try {
+			num = this.accbook.selectAccBookNum(qacc.getClientid());
+			if(0==num) {
+				ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_EMPTY);
+				ans.setRecordsFiltered(0);
+				return ans;
+			}
+		}
+		catch(Exception e) {
+			//>>//
+			e.printStackTrace();
+			ans.setRecordsFiltered(0);
+			ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_MISS);
+			return ans;
+		}
+
+		ans.setRecordsFiltered(num);
+		
+		List<OwnAccRow> elist = null;
+		
+		try {
+			elist = this.accbook.selectAccBookRows(qacc.getClientid(), qacc.getStart());
+			if(elist==null) {
+				//ans.setRecordsFiltered();
+				ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_EMPTY);
+				return ans;
+			}
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_MISS);
+			return ans;
+		}
+		
+		ans.setData(elist);
+		ans.setStatus(ComStatus.QueryOwnAccStatus.SUCCESS);
+		return ans;
+	}
+	
 }
 
 

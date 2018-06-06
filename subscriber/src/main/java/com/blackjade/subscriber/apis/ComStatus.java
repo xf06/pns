@@ -58,7 +58,19 @@ public class ComStatus {
 		UNKNOWN
 	}
 	
+	//------------ACC APIs----------------------------------//
+	
+	public static enum QueryOwnAccStatus{
+		SUCCESS,
+		WRONG_MSGID,
+		INMSG_ERR,
+		ACC_DB_EMPTY,
+		ACC_DB_MISS,
+		UNKNOWN
+	}
+
 	//------------------------------------------------------//
+
 	
 }
 
