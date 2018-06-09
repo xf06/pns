@@ -117,7 +117,7 @@ public class TService {
 			margin += tradeamount;
 
 			// update PNS and return
-			if (margin < quant) {
+			if (((margin+traded) < quant)&&(net!=0)) {
 				int retcode = this.pns.updatePnSDeal(oid, margin, net, ComStatus.PnSStatus.HALF_TRADED.toString());
 				if (retcode != 0)
 					return ComStatus.DealStatus.SUCCESS;
@@ -125,7 +125,7 @@ public class TService {
 					return ComStatus.DealStatus.DATABASE_ERR;
 			}
 
-			if (margin == quant) {
+			if (((margin + traded)== quant)&&(net==0)) {
 				int retcode = this.pns.updatePnSDeal(oid, margin, net, ComStatus.PnSStatus.FULL_LOCKED.toString());
 				if (retcode != 0)
 					return ComStatus.DealStatus.SUCCESS;
@@ -309,13 +309,22 @@ public class TService {
 			return ComStatus.PayConfirmStatus.DB_ORD_MISS;
 
 		// check ordrow
+		if (!ordrow.getPnsoid().equals(paycon.getPnsoid().toString()))
+			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
+		
+		if (ordrow.getSide() != paycon.getSide())
+			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
+		
+		if (ordrow.getCid() != paycon.getCid())
+			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
+		
 		if (ordrow.getPnsgid() != paycon.getPnsgid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 
 		if (ordrow.getPnsid() != paycon.getPnsid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 
-		if (ordrow.getPoid() != paycon.getClientid())
+		if (ordrow.getPoid() != paycon.getPoid())
 			return ComStatus.PayConfirmStatus.DB_ORD_STATUS;
 
 		if (ordrow.getPrice() != paycon.getPrice())
