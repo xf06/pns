@@ -52,6 +52,7 @@ public class ComStatus {
 		SUCCESS, 
 		WRONG_MSGID,
 		DATABASE_ERR,
+		IN_MSG_ERR,
 		IN_QUANT_ERR,
 		ORD_MISS_MATCH,
 		ORD_DATA_MESS,
@@ -66,6 +67,7 @@ public class ComStatus {
 	public static enum PayConfirmStatus {
 		SUCCESS, 
 		WRONG_MSGID,
+		IN_MSG_ERR,
 		PC_DATABASE_ERR,
 		PC_DB_MISS_MATCH,
 		PC_DB_CORRUPT,

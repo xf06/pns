@@ -212,13 +212,14 @@ public class PubController {
 		CPayConfirmAns ans = new CPayConfirmAns(paycon.getRequestid());		
 		
 		ans.setRequestid(paycon.getRequestid());
-		ans.setClientid(paycon.getClientid());	// product owner
+		ans.setClientid(paycon.getClientid());	// message owner
+		
 		ans.setOid(paycon.getOid()); 			// deal orderid
 		ans.setSide(paycon.getSide()); 			// deal side
-		
 		ans.setCid(paycon.getCid());			// deal side
+				
 		ans.setPnsoid(paycon.getPnsoid());		// deal side
-		
+		ans.setPoid(paycon.getPoid());			// publish side
 		ans.setPnsid(paycon.getPnsid());		// deal side
 		ans.setPnsgid(paycon.getPnsgid());		// deal side
 		ans.setPrice(paycon.getPrice());

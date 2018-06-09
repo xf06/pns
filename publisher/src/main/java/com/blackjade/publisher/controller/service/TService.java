@@ -268,10 +268,12 @@ public class TService {
 		long margin = pnsrow.getMargin();
 		long traded = pnsrow.getTraded();
 		long net = pnsrow.getNet();
+		long can = pnsrow.getCan();
+		
 		String status = pnsrow.getStatus();
 
 		// check margin, traded
-		if (quant != (margin + traded + net))
+		if (quant != (margin + traded + net + can))
 			return ComStatus.PayConfirmStatus.PC_DB_CORRUPT;
 
 		// check PnS status

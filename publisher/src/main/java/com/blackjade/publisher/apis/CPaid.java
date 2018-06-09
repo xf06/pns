@@ -11,6 +11,7 @@ public class CPaid {
 	private UUID requestid;
 	private int clientid;
 	private UUID oid;
+	private int cid;
 	private char side;
 	private UUID pnsoid;
 	private int poid;
@@ -18,12 +19,27 @@ public class CPaid {
 	private int pnsgid;
 	private long price;
 	private int quant;
-		
+
 	public CPaid() {
 		this.messageid = "7005";
 	}
-	
-	public PaidStatus reviewData(){
+
+	public PaidStatus reviewData() {
+		
+		if (!this.messageid.equals("7005"))
+			return ComStatus.PaidStatus.WRONG_MSGID;
+
+		if ('B' == this.getSide()) {
+			if (this.getClientid() != this.getCid()) {
+				return ComStatus.PaidStatus.IN_MSG_ERR;
+			}
+		}
+
+		if ('S' == this.getSide()) {
+			if (this.getClientid() != this.getPoid()) {
+				return ComStatus.PaidStatus.IN_MSG_ERR;
+			}
+		}
 		return ComStatus.PaidStatus.SUCCESS;
 	}
 
@@ -59,14 +75,22 @@ public class CPaid {
 		this.oid = oid;
 	}
 
+	public int getCid() {
+		return cid;
+	}
+
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+
 	public char getSide() {
 		return side;
 	}
 
 	public void setSide(char side) {
 		this.side = side;
-	}	
-	
+	}
+
 	public UUID getPnsoid() {
 		return pnsoid;
 	}
@@ -74,7 +98,7 @@ public class CPaid {
 	public void setPnsoid(UUID pnsoid) {
 		this.pnsoid = pnsoid;
 	}
-	
+
 	public int getPoid() {
 		return poid;
 	}
@@ -113,6 +137,6 @@ public class CPaid {
 
 	public void setQuant(int quant) {
 		this.quant = quant;
-	}	
-	
+	}
+
 }

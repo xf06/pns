@@ -10,20 +10,21 @@ public class CPayConfirmAns {
 
 	private String messageid;
 	private UUID requestid;
-	private int clientid;
+	private int clientid; // message owner
 	private UUID oid;
-	private int cid;
+	private int cid; // dealer id
 	private char side;
 	private UUID pnsoid; // pns order id
-	//private int poid; // product owner id// clientid
+	private int poid; // publisher id
 	private int pnsid;
 	private int pnsgid;
 	private long price;
 	private int quant;
 	private PayConfirmStatus status;
 
-	public CPayConfirmAns() {}
-	
+	public CPayConfirmAns() {
+	}
+
 	public CPayConfirmAns(UUID requestid) {
 		this.messageid = "7008";
 		this.requestid = requestid;
@@ -61,6 +62,14 @@ public class CPayConfirmAns {
 		this.oid = oid;
 	}
 
+	public int getCid() {
+		return cid;
+	}
+
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+
 	public char getSide() {
 		return side;
 	}
@@ -77,12 +86,12 @@ public class CPayConfirmAns {
 		this.pnsoid = pnsoid;
 	}
 
-	public int getCid() {
-		return cid;
+	public int getPoid() {
+		return poid;
 	}
 
-	public void setCid(int cid) {
-		this.cid = cid;
+	public void setPoid(int poid) {
+		this.poid = poid;
 	}
 
 	public int getPnsid() {
