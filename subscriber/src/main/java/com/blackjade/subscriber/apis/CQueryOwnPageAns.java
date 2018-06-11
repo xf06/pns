@@ -25,7 +25,7 @@ public class CQueryOwnPageAns {
 	private List<OwnBookRow> data;
 
 	public CQueryOwnPageAns(UUID requestid) {
-		this.messageid = "6022";
+		this.messageid = "6024";
 		this.requestid = requestid;
 		// this.data = new ArrayList<PubBookRow>();
 	}

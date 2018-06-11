@@ -125,7 +125,7 @@ public class TService {
 					return ComStatus.DealStatus.DATABASE_ERR;
 			}
 
-			if (((margin + traded)== quant)&&(net==0)) {
+			if (((margin+traded)== quant)&&(net==0)) {
 				int retcode = this.pns.updatePnSDeal(oid, margin, net, ComStatus.PnSStatus.FULL_LOCKED.toString());
 				if (retcode != 0)
 					return ComStatus.DealStatus.SUCCESS;
@@ -147,7 +147,7 @@ public class TService {
 			net -= tradeamount;
 			margin += tradeamount;
 
-			if (margin < quant) {
+			if (((margin+traded) < quant)&&(net!=0)) {
 				int retcode = this.pns.updatePnSDeal(oid, margin, net, ComStatus.PnSStatus.HALF_TRADED.toString());
 				if (retcode != 0)
 					return ComStatus.DealStatus.SUCCESS;
@@ -155,7 +155,7 @@ public class TService {
 					return ComStatus.DealStatus.DATABASE_ERR;
 			}
 
-			if (margin == quant) {
+			if (((margin+traded)== quant)&&(net==0)) {
 				int retcode = this.pns.updatePnSDeal(oid, margin, net, ComStatus.PnSStatus.FULL_LOCKED.toString());
 				if (retcode != 0)
 					return ComStatus.DealStatus.SUCCESS;
