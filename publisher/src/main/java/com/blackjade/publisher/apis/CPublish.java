@@ -24,16 +24,28 @@ public class CPublish {
 	}
 
 	public PublishStatus reviewData() {
-		
-		if((this.side!='B')&&(this.side!='S'))
+
+		if (!this.messageid.equals("7001"))
 			return ComStatus.PublishStatus.IN_MSG_ERR;
-		
-		if((this.quant<=0)||(this.price<=0))
+
+		if (this.requestid == null)
 			return ComStatus.PublishStatus.IN_MSG_ERR;
-		
-		//if(this.pns)
-		
-		
+
+		if (this.clientid <= 0)
+			return ComStatus.PublishStatus.IN_MSG_ERR;
+
+		if ((this.side != 'B') && (this.side != 'S'))
+			return ComStatus.PublishStatus.IN_MSG_ERR;
+
+		if ((this.quant <= 0) || (this.price <= 0))
+			return ComStatus.PublishStatus.IN_MSG_ERR;
+
+		if ((this.max <= 0) || (this.min <= 0))
+			return ComStatus.PublishStatus.IN_MSG_ERR;
+
+		if (this.max < this.min)
+			return ComStatus.PublishStatus.IN_MSG_ERR;
+
 		return ComStatus.PublishStatus.SUCCESS;
 	}
 

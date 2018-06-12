@@ -28,18 +28,44 @@ public class CPaid {
 		
 		if (!this.messageid.equals("7005"))
 			return ComStatus.PaidStatus.WRONG_MSGID;
+		
+		if (this.requestid == null)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if (this.clientid <= 0)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if (this.oid == null)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if (this.cid <= 0)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+		
+		if (('S' != this.side) && ('B' != this.side))
+			return ComStatus.PaidStatus.IN_MSG_ERR;
 
 		if ('B' == this.getSide()) {
-			if (this.getClientid() != this.getCid()) {
+			if (this.getClientid() != this.getCid())
 				return ComStatus.PaidStatus.IN_MSG_ERR;
-			}
 		}
 
 		if ('S' == this.getSide()) {
-			if (this.getClientid() != this.getPoid()) {
+			if (this.getClientid() != this.getPoid())
 				return ComStatus.PaidStatus.IN_MSG_ERR;
-			}
 		}
+
+		if (this.pnsoid == null)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if (this.poid < 0)
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if ((this.quant <= 0) || (this.price <= 0))
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
+		if ((this.pnsid <= 0) || (this.pnsgid <= 0))
+			return ComStatus.PaidStatus.IN_MSG_ERR;
+
 		return ComStatus.PaidStatus.SUCCESS;
 	}
 
