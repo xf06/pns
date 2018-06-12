@@ -27,6 +27,7 @@ import com.blackjade.publisher.dao.OrderDao;
 import com.blackjade.publisher.dao.PnSDao;
 import com.blackjade.publisher.domain.OrderRow;
 import com.blackjade.publisher.domain.PnSRow;
+import com.blackjade.publisher.exception.CapiException;
 
 @RestController
 public class PubController {
@@ -93,11 +94,15 @@ public class PubController {
 		// save 
 		try {
 			retcode = this.pns.insertPnS(pnsrow);
-		} finally {
-			if(retcode==0) {
-				ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
-				return ans;
-			}
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
+			return ans;
+		}
+		
+		if(retcode==0) {
+			ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
+			return ans;
 		}
 			
 		ans.setStatus(ComStatus.PublishStatus.SUCCESS);
@@ -148,7 +153,6 @@ public class PubController {
 		ordrow.setPrice(deal.getPrice());
 		ordrow.setQuant(deal.getQuant());
 		ordrow.setForm("normal");
-
 		
 		// update PnS database if necessary 
 		st = this.tsv.updatePnS(deal);		
@@ -234,10 +238,15 @@ public class PubController {
 		// update PnS from margin->traded
 		try {
 			st = this.tsv.updateOrdPnS(paycon);
-		}catch(Exception e) {
+		}
+		catch(CapiException e) {
 			ans.setStatus(ComStatus.PayConfirmStatus.valueOf(e.getMessage()));
 			return ans;
-		}		
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.PayConfirmStatus.ORD_ERR);
+			return ans;
+		}
 		
 		if(st!=ComStatus.PayConfirmStatus.SUCCESS) {
 			ans.setStatus(st);
@@ -281,9 +290,12 @@ public class PubController {
 			ans.setQuant(amnt.intValue());
 			return ans;
 		}
-		catch(Exception e) {
-			
+		catch(CapiException e) {
 			ans.setStatus(ComStatus.CancelStatus.valueOf(e.getMessage()));
+			return ans;
+		}
+		catch(Exception e) {			
+			ans.setStatus(ComStatus.CancelStatus.UNKNOWN);
 			return ans;
 		}
 				

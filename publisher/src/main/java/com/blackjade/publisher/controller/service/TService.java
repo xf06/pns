@@ -19,6 +19,7 @@ import com.blackjade.publisher.dao.OrderDao;
 import com.blackjade.publisher.dao.PnSDao;
 import com.blackjade.publisher.domain.OrderRow;
 import com.blackjade.publisher.domain.PnSRow;
+import com.blackjade.publisher.exception.CapiException;
 
 @Transactional
 @Component
@@ -386,9 +387,14 @@ public class TService {
 
 				ordret = this.ord.updateOrderStatus(ordrow.getOid(), ComStatus.OrderStatus.PAYCONFIRM.toString());
 				if (ordret == 0)
-					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
-			} catch (Exception e) {
-				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
+					throw new CapiException(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
+			}
+			catch(CapiException e) {
+				throw new CapiException(e.getMessage());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				throw new CapiException(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
 			}
 			
 			int retcode = 0;
@@ -397,11 +403,14 @@ public class TService {
 						ComStatus.OrderStatus.PAYCONFIRM.toString());
 			} catch (Exception e) {
 				// logging data
-			} finally {
-				if (retcode == 0) {
-					return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
-				}
-			}
+				e.printStackTrace();
+				throw new CapiException(ComStatus.PayConfirmStatus.PC_DATABASE_ERR.toString());
+				
+			} 
+			
+			if (retcode == 0) {
+				return ComStatus.PayConfirmStatus.PC_DATABASE_ERR;
+			}			
 			
 			return ComStatus.PayConfirmStatus.SUCCESS;
 		}
@@ -423,9 +432,14 @@ public class TService {
 
 				ordret = this.ord.updateOrderStatus(ordrow.getOid(), ComStatus.OrderStatus.PAYCONFIRM.toString());
 				if (ordret == 0)
-					throw new Exception(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
-			} catch (Exception e) {
-				throw new Exception(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
+					throw new CapiException(ComStatus.PayConfirmStatus.DB_PNS_ERR.toString());
+			} 
+			catch(CapiException e) {
+				throw new CapiException(e.getMessage());
+			}
+			catch (Exception e) {
+				e.printStackTrace();				
+				throw new CapiException(ComStatus.PayConfirmStatus.PC_DB_CORRUPT.toString());
 			}
 			
 			int retcode = 0;
@@ -551,12 +565,17 @@ public class TService {
 				pnsret = this.pns.updatePnSCancelDeal(can.getPnsoid().toString(), margin, net,
 						ComStatus.PnSStatus.HALF_TRADED.toString());
 				if (pnsret == 0)
-					throw new Exception(ComStatus.CancelStatus.PNS_UPDATE_FAILED.toString());
+					throw new CapiException(ComStatus.CancelStatus.PNS_UPDATE_FAILED.toString());
 
 				amnt = can.getQuant();
 				return ComStatus.CancelStatus.SUCCESS;
-			} catch (Exception e) {
+			} 
+			catch (CapiException e) {
+				throw new CapiException(e.getMessage());
+			}
+			catch(Exception e) {
 				// save into logs
+				e.printStackTrace();
 				throw new Exception(ComStatus.CancelStatus.PNS_UPDATE_FAILED.toString());
 			}
 
@@ -585,6 +604,7 @@ public class TService {
 				if (pnsrow == null)
 					return ComStatus.CancelStatus.DB_PNS_MISS;
 			} catch (Exception e) {
+				e.printStackTrace();
 				return ComStatus.CancelStatus.DB_PNS_MISS;
 			}
 
