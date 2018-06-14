@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blackjade.publisher.apis.CCancel;
 import com.blackjade.publisher.apis.CCancelAns;
+import com.blackjade.publisher.apis.CDCancel;
+import com.blackjade.publisher.apis.CDCancelAns;
 import com.blackjade.publisher.apis.CDeal;
 import com.blackjade.publisher.apis.CDealAns;
+import com.blackjade.publisher.apis.CPCancel;
+import com.blackjade.publisher.apis.CPCancelAns;
 import com.blackjade.publisher.apis.CPaid;
 import com.blackjade.publisher.apis.CPaidAns;
 import com.blackjade.publisher.apis.CPayConfirm;
@@ -20,7 +24,9 @@ import com.blackjade.publisher.apis.CPayConfirmAns;
 import com.blackjade.publisher.apis.CPublish;
 import com.blackjade.publisher.apis.CPublishAns;
 import com.blackjade.publisher.apis.ComStatus;
+import com.blackjade.publisher.apis.ComStatus.DCancelStatus;
 import com.blackjade.publisher.apis.ComStatus.DealStatus;
+import com.blackjade.publisher.apis.ComStatus.PCancelStatus;
 import com.blackjade.publisher.apis.ComStatus.PublishStatus;
 import com.blackjade.publisher.controller.service.TService;
 import com.blackjade.publisher.dao.OrderDao;
@@ -44,7 +50,7 @@ public class PubController {
 	// Publish
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
 	@ResponseBody
-	public CPublishAns CPublish(@RequestBody CPublish pub) {
+	public CPublishAns cPublish(@RequestBody CPublish pub) {
 
 		PublishStatus st = pub.reviewData();
 
@@ -112,7 +118,7 @@ public class PubController {
 	// Deal // price checking need to be done
 	@RequestMapping(value = "/deal", method = RequestMethod.POST)
 	@ResponseBody
-	public CDealAns CDeal(@RequestBody CDeal deal) {
+	public CDealAns cDeal(@RequestBody CDeal deal) {
 		// check input errors
 		DealStatus st = deal.reviewData();
 		UUID oid = UUID.randomUUID();
@@ -173,7 +179,7 @@ public class PubController {
 	// Paid
 	@RequestMapping(value = "/paid", method = RequestMethod.POST)
 	@ResponseBody
-	public CPaidAns CPaid(@RequestBody CPaid paid) {
+	public CPaidAns cPaid(@RequestBody CPaid paid) {
 		// check input 
 		ComStatus.PaidStatus st = paid.reviewData();
 		
@@ -208,7 +214,7 @@ public class PubController {
 	// PayConfirm
 	@RequestMapping(value = "/payconfirm", method = RequestMethod.POST)
 	@ResponseBody
-	public CPayConfirmAns CPayConfirm(@RequestBody CPayConfirm paycon) {
+	public CPayConfirmAns cPayConfirm(@RequestBody CPayConfirm paycon) {
 		// check input 
 		ComStatus.PayConfirmStatus st = paycon.reviewData();
 		
@@ -264,7 +270,7 @@ public class PubController {
 	// Cancel
 	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
 	@ResponseBody
-	public CCancelAns CCancel(@RequestBody CCancel can) {
+	public CCancelAns cCancel(@RequestBody CCancel can) {
 		// check input 
 		ComStatus.CancelStatus st = can.reviewData();
 		
@@ -302,4 +308,102 @@ public class PubController {
 		// report error if occur		
 		// return ans;
 	}
+	
+	
+	// CDCancel
+	@RequestMapping(value = "/dcancel", method = RequestMethod.POST)
+	@ResponseBody
+	public CDCancelAns cDCancel(@RequestBody CDCancel can) {
+		
+		DCancelStatus st = can.reviewData();			
+		CDCancelAns ans =  new CDCancelAns(can.getRequestid());
+		
+		ans.setClientid(can.getClientid());
+		ans.setOid(ans.getOid());
+		ans.setCid(ans.getCid());
+		ans.setSide(ans.getSide());
+		
+		ans.setPnsoid(ans.getPnsoid());
+		ans.setPoid(ans.getPoid());
+		ans.setPnsgid(ans.getPnsgid());
+		ans.setPnsid(ans.getPnsid());
+		
+		ans.setPrice(ans.getPrice());
+		ans.setQuant(ans.getQuant());
+		
+		if(ComStatus.DCancelStatus.SUCCESS!=st) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		try{
+			
+			st = this.tsv.updateOrdPnS(can);
+			
+			if(ComStatus.DCancelStatus.SUCCESS!=st) {
+				ans.setStatus(st);
+				return ans;
+			}
+			
+			ans.setStatus(st);			
+			return ans; // success return
+		}
+		catch(CapiException e) {
+			ans.setStatus(ComStatus.DCancelStatus.valueOf(e.getMessage()));
+			return ans;
+		}
+		catch(Exception e) {			
+			ans.setStatus(ComStatus.DCancelStatus.UNKNOWN);
+			return ans;
+		}
+		
+	}
+	
+	// CPCancel
+	@RequestMapping(value = "/pcancel", method = RequestMethod.POST)
+	@ResponseBody
+	public CPCancelAns cPCancel(@RequestBody CPCancel can) {
+		
+		PCancelStatus st =  can.reviewData();
+		CPCancelAns ans = new CPCancelAns(can.getRequestid());
+		
+		ans.setClientid(can.getClientid());
+		ans.setOid(ans.getOid());
+		ans.setCid(ans.getCid());
+		ans.setSide(ans.getSide());
+		
+		ans.setPnsoid(ans.getPnsoid());
+		ans.setPoid(ans.getPoid());
+		ans.setPnsgid(ans.getPnsgid());
+		ans.setPnsid(ans.getPnsid());
+		ans.setAmount(ans.getAmount());// this will be updated
+		
+		if(ComStatus.PCancelStatus.SUCCESS!=st) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		try{
+			
+			st = this.tsv.updateOrdPnS(can, ans); // canamt set here
+			
+			if(ComStatus.PCancelStatus.SUCCESS!=st) {
+				ans.setStatus(st);
+				return ans;
+			}
+			
+			ans.setStatus(st);			
+			return ans; // success return
+		}
+		catch(CapiException e) {
+			ans.setStatus(ComStatus.PCancelStatus.valueOf(e.getMessage()));
+			return ans;
+		}
+		catch(Exception e) {			
+			ans.setStatus(ComStatus.PCancelStatus.UNKNOWN);
+			return ans;
+		}
+		
+	}
+	
 }
