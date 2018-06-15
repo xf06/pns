@@ -33,5 +33,10 @@
 		UPDATE pns.pns a SET MARGIN=#{margin},NET=#{net},STATUS=#{status} WHERE
 		a.OID=#{oid}
 	</update>
+	
+	<update id="updatePnSCancelPublic">
+		UPDATE pns.pns a SET NET=#{net},CAN=#{can},STATUS=#{status} WHERE
+		a.OID=#{oid}
+	</update>
 
 </mapper>

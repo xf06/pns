@@ -40,9 +40,13 @@ public class CDCancel {
 		if (this.poid <= 0)
 			return ComStatus.DCancelStatus.IN_MSG_ERR;
 
-		if ((this.quant <= 0) || (this.quant <= 0))
+		if ((this.price <= 0) || (this.quant <= 0))
 			return ComStatus.DCancelStatus.IN_MSG_ERR;
 
+		// logic check
+		if(this.clientid!=this.cid)
+			return ComStatus.DCancelStatus.IN_MSG_ERR;
+		
 		return ComStatus.DCancelStatus.SUCCESS;
 	}
 
