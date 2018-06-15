@@ -368,8 +368,6 @@ public class PubController {
 		CPCancelAns ans = new CPCancelAns(can.getRequestid());
 		
 		ans.setClientid(can.getClientid());
-		ans.setOid(ans.getOid());
-		ans.setCid(ans.getCid());
 		ans.setSide(ans.getSide());
 		
 		ans.setPnsoid(ans.getPnsoid());

@@ -10,8 +10,8 @@ public class CPCancel {
 	private String messageid;
 	private UUID requestid;
 	private int clientid;
-	private UUID oid;
-	private int cid;
+	//private UUID oid;
+	//private int cid;
 	private char side; // <B or S>
 	private UUID pnsoid;
 	private int poid; // product owner id
@@ -42,6 +42,10 @@ public class CPCancel {
 		if (this.amount<= 0)
 			return ComStatus.PCancelStatus.IN_MSG_ERR;
 			
+		// logic check
+		if(this.clientid!=this.poid)
+			return ComStatus.PCancelStatus.IN_MSG_ERR;
+		
 		return ComStatus.PCancelStatus.SUCCESS;
 	}
 	
@@ -69,21 +73,21 @@ public class CPCancel {
 		this.clientid = clientid;
 	}
 
-	public UUID getOid() {
-		return oid;
-	}
-
-	public void setOid(UUID oid) {
-		this.oid = oid;
-	}
-
-	public int getCid() {
-		return cid;
-	}
-
-	public void setCid(int cid) {
-		this.cid = cid;
-	}
+//	public UUID getOid() {
+//		return oid;
+//	}
+//
+//	public void setOid(UUID oid) {
+//		this.oid = oid;
+//	}
+//
+//	public int getCid() {
+//		return cid;
+//	}
+//
+//	public void setCid(int cid) {
+//		this.cid = cid;
+//	}
 
 	public char getSide() {
 		return side;
