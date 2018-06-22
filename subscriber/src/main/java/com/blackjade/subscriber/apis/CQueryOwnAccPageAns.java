@@ -9,7 +9,7 @@ import com.blackjade.subscriber.domain.OwnAccRow;
 //cQueryOwnAccTopPageAns	0x5002	{requestid, clientid, pnsid, pnsgid, status, list[]}	HTTP	
 
 public class CQueryOwnAccPageAns {
-	
+
 	private String messageid;
 	private UUID requestid;
 	private int clientid;
@@ -19,12 +19,11 @@ public class CQueryOwnAccPageAns {
 	private int recordsFiltered;
 	private List<OwnAccRow> data;
 
-	
 	public CQueryOwnAccPageAns(UUID requestid) {
-		this.messageid =  "5002";
+		this.messageid = "5002";
 		this.requestid = requestid;
 	}
-	
+
 	public UUID getRequestid() {
 		return requestid;
 	}
@@ -79,6 +78,13 @@ public class CQueryOwnAccPageAns {
 
 	public void setData(List<OwnAccRow> data) {
 		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "CQueryOwnAccPageAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", start=" + start + ", length=" + length + ", status=" + status + ", recordsFiltered="
+				+ recordsFiltered + ", data=" + data + "]";
 	}
 
 }

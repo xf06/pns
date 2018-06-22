@@ -20,7 +20,7 @@ public class CQueryPnSOrderAns {
 	private int start;
 	private int length; // not in use, it must be 10
 	private QueryPnSOrdStatus status;
-	
+
 	private int recordsFiltered;
 	private List<OrdBookRow> data;
 
@@ -115,6 +115,13 @@ public class CQueryPnSOrderAns {
 
 	public void setData(List<OrdBookRow> data) {
 		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "CQueryPnSOrderAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", side=" + side + ", start=" + start + ", length="
+				+ length + ", status=" + status + ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
 	}
 
 }

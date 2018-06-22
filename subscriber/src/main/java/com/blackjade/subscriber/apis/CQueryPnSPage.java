@@ -89,4 +89,11 @@ public class CQueryPnSPage {
 		this.length = length;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryPnSPage [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", side=" + side + ", start=" + start + ", length="
+				+ length + "]";
+	}
+
 }

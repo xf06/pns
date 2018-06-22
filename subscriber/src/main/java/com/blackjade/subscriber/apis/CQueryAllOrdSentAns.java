@@ -108,5 +108,12 @@ public class CQueryAllOrdSentAns {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryAllOrdSentAns [messageid=" + messageid + ", requestid=" + requestid + ", cid=" + cid + ", pnsgid="
+				+ pnsgid + ", pnsid=" + pnsid + ", status=" + status + ", start=" + start + ", length=" + length
+				+ ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
+	}
+
 	
 }

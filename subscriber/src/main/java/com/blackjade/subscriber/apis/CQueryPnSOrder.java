@@ -16,7 +16,7 @@ public class CQueryPnSOrder {
 	private int pnsgid;
 	private char side;
 	private int start;
-	private int length;	// not in use it must be 10
+	private int length; // not in use it must be 10
 
 	public QueryPnSOrdStatus reviewData() {
 		if (!this.messageid.equals("6025"))
@@ -36,7 +36,7 @@ public class CQueryPnSOrder {
 	public UUID getRequestid() {
 		return requestid;
 	}
-	
+
 	public void setRequestid(UUID requestid) {
 		this.requestid = requestid;
 	}
@@ -48,7 +48,7 @@ public class CQueryPnSOrder {
 	public void setClientid(int clientid) {
 		this.clientid = clientid;
 	}
-	
+
 	public UUID getPnsoid() {
 		return pnsoid;
 	}
@@ -95,6 +95,13 @@ public class CQueryPnSOrder {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	@Override
+	public String toString() {
+		return "CQueryPnSOrder [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsoid=" + pnsoid + ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", side=" + side + ", start="
+				+ start + ", length=" + length + "]";
 	}
 
 }

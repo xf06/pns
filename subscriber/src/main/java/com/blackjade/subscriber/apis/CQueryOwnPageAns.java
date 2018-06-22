@@ -101,7 +101,7 @@ public class CQueryOwnPageAns {
 	public void setStatus(QueryOwnStatus status) {
 		this.status = status;
 	}
-	
+
 	public int getRecordsFiltered() {
 		return recordsFiltered;
 	}
@@ -117,6 +117,12 @@ public class CQueryOwnPageAns {
 	public void setData(List<OwnBookRow> data) {
 		this.data = data;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "CQueryOwnPageAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", side=" + side + ", start=" + start + ", length="
+				+ length + ", status=" + status + ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
+	}
+
 }

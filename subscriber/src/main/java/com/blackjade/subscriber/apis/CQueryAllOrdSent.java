@@ -83,4 +83,10 @@ public class CQueryAllOrdSent {
 		this.length = length;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryAllOrdSent [messageid=" + messageid + ", requestid=" + requestid + ", cid=" + cid + ", pnsgid="
+				+ pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + "]";
+	}
+	
 }

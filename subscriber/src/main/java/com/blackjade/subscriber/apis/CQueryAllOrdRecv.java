@@ -79,6 +79,12 @@ public class CQueryAllOrdRecv {
 		this.length = length;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryAllOrdRecv [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + "]";
+	}
+
 }
 
 

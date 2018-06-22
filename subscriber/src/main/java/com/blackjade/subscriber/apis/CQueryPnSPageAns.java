@@ -119,4 +119,11 @@ public class CQueryPnSPageAns {
 		this.data = data;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryPnSPageAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", side=" + side + ", start=" + start + ", length="
+				+ length + ", status=" + status + ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
+	}
+
 }

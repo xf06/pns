@@ -101,4 +101,11 @@ public class CQueryOwnOrd {
 		this.side = side;
 	}
 
+	@Override
+	public String toString() {
+		return "CQueryOwnOrd [messageid=" + messageid + ", requestid=" + requestid + ", oid=" + oid + ", cid=" + cid
+				+ ", pnsoid=" + pnsoid + ", poid=" + poid + ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", side=" + side
+				+ "]";
+	}
+
 }

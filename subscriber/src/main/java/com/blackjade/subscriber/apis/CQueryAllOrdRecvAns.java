@@ -106,6 +106,14 @@ public class CQueryAllOrdRecvAns {
 	public void setData(List<AllOrdRecvRow> data) {
 		this.data = data;
 	}
+
+	@Override
+	public String toString() {
+		return "CQueryAllOrdRecvAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + ", status="
+				+ status + ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
+	}
+	
 }
 
 

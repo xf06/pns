@@ -17,13 +17,13 @@ public class CQueryOwnOrdAns {
 
 	private String messageid;
 	private UUID requestid;
-	
+
 	private UUID pnsoid;
 	private int poid;
 	private int pnsgid;
 	private int pnsid;
 	private char side;
-	
+
 	private OrdBookRow ord;
 	private QueryOwnOrdStatus status;
 
@@ -103,6 +103,12 @@ public class CQueryOwnOrdAns {
 	public void setOrd(OrdBookRow ord) {
 		this.ord = ord;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "CQueryOwnOrdAns [messageid=" + messageid + ", requestid=" + requestid + ", pnsoid=" + pnsoid + ", poid="
+				+ poid + ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", side=" + side + ", ord=" + ord + ", status="
+				+ status + "]";
+	}
+
 }
