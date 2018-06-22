@@ -368,13 +368,13 @@ public class PubController {
 		CPCancelAns ans = new CPCancelAns(can.getRequestid());
 		
 		ans.setClientid(can.getClientid());
-		ans.setSide(ans.getSide());
+		ans.setSide(can.getSide());
 		
-		ans.setPnsoid(ans.getPnsoid());
-		ans.setPoid(ans.getPoid());
-		ans.setPnsgid(ans.getPnsgid());
-		ans.setPnsid(ans.getPnsid());
-		ans.setAmount(ans.getAmount());// this will be updated
+		ans.setPnsoid(can.getPnsoid());
+		ans.setPoid(can.getPoid());
+		ans.setPnsgid(can.getPnsgid());
+		ans.setPnsid(can.getPnsid());
+		ans.setAmount(can.getAmount());// this will be updated
 		
 		if(ComStatus.PCancelStatus.SUCCESS!=st) {
 			ans.setStatus(st);

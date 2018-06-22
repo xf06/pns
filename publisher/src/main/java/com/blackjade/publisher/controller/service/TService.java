@@ -836,7 +836,7 @@ public class TService {
 		long net = pnsrow.getNet();
 		long traded = pnsrow.getTraded();
 		long canamt = pnsrow.getCan();
-
+		long currcan = 0;
 		// check pnsrow
 		if (quant != (margin + net + traded + canamt))
 			return ComStatus.PCancelStatus.DB_PNS_MESS;
@@ -861,7 +861,7 @@ public class TService {
 			try {
 				pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, canamt, ComStatus.PnSStatus.CANCELLED.toString());
 				
-				if (pnsret != 0)
+				if (pnsret == 0)
 					return ComStatus.PCancelStatus.PNS_UPDATE_FAILED;
 			} catch (Exception e) {
 				return ComStatus.PCancelStatus.PNS_UPDATE_FAILED;
@@ -875,27 +875,29 @@ public class TService {
 		if (pnsst == ComStatus.PnSStatus.HALF_TRADED) {
 			if (margin != 0) {
 				// HALF_TRADED->FULL_LOCKED
-				net = 0;
+				currcan = net;
 				canamt += net;
-
+				net = 0;
+				
 				pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, canamt, ComStatus.PnSStatus.FULL_LOCKED.toString());
-				if (pnsret != 0)
+				if (pnsret == 0)
 					return ComStatus.PCancelStatus.PNS_UPDATE_FAILED;
 
-				ans.setAmount(canamt);
+				ans.setAmount(currcan);
 				return ComStatus.PCancelStatus.SUCCESS; // success return
 				
 			} 
 			else {
 				// HALF_TRADED->HALF_CANCELLED
-				net = 0;
+				currcan = net;
 				canamt += net;
+				net = 0;
 
 				pnsret = this.pns.updatePnSCancelPublic(can.getPnsoid().toString(), net, canamt, ComStatus.PnSStatus.HALF_CANCELLED.toString());
-				if (pnsret != 0)
+				if (pnsret == 0)
 					return ComStatus.PCancelStatus.PNS_UPDATE_FAILED;
 
-				ans.setAmount(canamt);
+				ans.setAmount(currcan);
 				return ComStatus.PCancelStatus.SUCCESS; // success return
 			}
 		}
