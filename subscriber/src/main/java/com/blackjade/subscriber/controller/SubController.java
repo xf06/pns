@@ -145,7 +145,7 @@ public class SubController {
 
 		if (st != ComStatus.QueryOwnStatus.SUCCESS) {
 			ans.setStatus(st);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -157,13 +157,13 @@ public class SubController {
 			if (totalnum == 0) {
 				ans.setRecordsFiltered(totalnum);
 				ans.setStatus(ComStatus.QueryOwnStatus.PNS_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			ans.setRecordsFiltered(totalnum);
 			ans.setStatus(ComStatus.QueryOwnStatus.PNS_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -174,12 +174,12 @@ public class SubController {
 					qpns.getStart());
 			if (elist == null) {
 				ans.setStatus(ComStatus.QueryOwnStatus.PNS_DB_MISS);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			ans.setStatus(ComStatus.QueryOwnStatus.PNS_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -187,7 +187,7 @@ public class SubController {
 		ans.setRecordsFiltered(totalnum);
 		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryOwnStatus.SUCCESS);
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 
 	}
@@ -196,7 +196,7 @@ public class SubController {
 	@ResponseBody
 	public CQueryPnSOrderAns QueryPnSOrder(@RequestBody CQueryPnSOrder qpns) {
 
-		sublog.info(qpns);
+		sublog.info(qpns.toString());
 		
 		// check input data
 		QueryPnSOrdStatus st = qpns.reviewData();
@@ -211,7 +211,7 @@ public class SubController {
 
 		if (st != ComStatus.QueryPnSOrdStatus.SUCCESS) {
 			ans.setStatus(st);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -229,7 +229,7 @@ public class SubController {
 			} else {
 				// there isn't a need if reviewdata works
 				ans.setStatus(ComStatus.QueryPnSOrdStatus.UNKNOWN);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		}
@@ -239,13 +239,13 @@ public class SubController {
 					qpns.getPnsid(), side);
 			if (totalnum == 0) {
 				ans.setStatus(ComStatus.QueryPnSOrdStatus.ORD_DB_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ans.setStatus(ComStatus.QueryPnSOrdStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -257,20 +257,20 @@ public class SubController {
 					qpns.getPnsid(), side, qpns.getStart());
 			if ((elist == null) || (elist.isEmpty())) {
 				ans.setStatus(ComStatus.QueryPnSOrdStatus.ORD_DB_MISS);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ans.setStatus(ComStatus.QueryPnSOrdStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
 		ans.setRecordsFiltered(totalnum);// not in use
 		ans.setData(elist);
 		ans.setLength(10);// always as it is
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 	}
 
@@ -278,7 +278,7 @@ public class SubController {
 	@ResponseBody
 	public CQueryOwnOrdAns QueryOwnOrd(@RequestBody CQueryOwnOrd qord) {
 
-		sublog.info(qord);
+		sublog.info(qord.toString());
 		
 		// check input
 		QueryOwnOrdStatus st = qord.reviewData();
@@ -293,7 +293,7 @@ public class SubController {
 
 		if (st != ComStatus.QueryOwnOrdStatus.SUCCESS) {
 			ans.setStatus(ComStatus.QueryOwnOrdStatus.INMSG_ERR);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -305,19 +305,19 @@ public class SubController {
 
 			if (obr == null) {
 				ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
 		ans.setOrd(obr);
 		ans.setStatus(ComStatus.QueryOwnOrdStatus.SUCCESS);
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 	}
 
@@ -325,7 +325,7 @@ public class SubController {
 	@ResponseBody
 	public CQueryAllOrdSentAns QueryAllOrdSent(@RequestBody CQueryAllOrdSent qaos) {
 		
-		sublog.info(qaos);
+		sublog.info(qaos.toString());
 		
 		// input review data
 		QueryAllOrdSentStatus st = qaos.reviewData();
@@ -340,7 +340,7 @@ public class SubController {
 
 		if (st != ComStatus.QueryAllOrdSentStatus.SUCCESS) {
 			ans.setStatus(st);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -351,13 +351,13 @@ public class SubController {
 			if (num == 0) {
 				ans.setRecordsFiltered(num);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			ans.setRecordsFiltered(num);
 			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -368,21 +368,21 @@ public class SubController {
 			if (elist == null) {
 				ans.setRecordsFiltered(0);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 
 		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
 		ans.setRecordsFiltered(num);
 		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryAllOrdSentStatus.SUCCESS);
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 	}
 
@@ -390,7 +390,7 @@ public class SubController {
 	@ResponseBody
 	public CQueryAllOrdRecvAns QueryAllOrdRecv(@RequestBody CQueryAllOrdRecv qaor) {
 
-		sublog.info(qaor);
+		sublog.info(qaor.toString());
 
 		QueryAllOrdRecvStatus st = qaor.reviewData();
 
@@ -404,7 +404,7 @@ public class SubController {
 
 		if (st != ComStatus.QueryAllOrdRecvStatus.SUCCESS) {
 			ans.setStatus(st);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -415,13 +415,13 @@ public class SubController {
 			if (num == 0) {
 				ans.setRecordsFiltered(num);
 				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -433,20 +433,20 @@ public class SubController {
 			if (elist == null) {
 				ans.setRecordsFiltered(0);
 				ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		} catch (Exception e) {
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryAllOrdRecvStatus.ORD_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
 		ans.setRecordsFiltered(num);
 		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryAllOrdRecvStatus.SUCCESS);
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 	}
 
@@ -455,7 +455,7 @@ public class SubController {
 	@ResponseBody
 	public CQueryOwnAccPageAns QueryOwnAccPage(@RequestBody CQueryOwnAccPage qacc) {
 		
-		sublog.info(qacc);
+		sublog.info(qacc.toString());
 		
 		// review income data
 		QueryOwnAccStatus st = qacc.reviewData();
@@ -471,7 +471,7 @@ public class SubController {
 		
 		if(ComStatus.QueryOwnAccStatus.SUCCESS!=st) {
 			ans.setStatus(st);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -481,7 +481,7 @@ public class SubController {
 			if(0==num) {
 				ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_EMPTY);
 				ans.setRecordsFiltered(0);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		}
@@ -490,7 +490,7 @@ public class SubController {
 			e.printStackTrace();
 			ans.setRecordsFiltered(0);
 			ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 
@@ -503,19 +503,19 @@ public class SubController {
 			if(elist==null) {
 				//ans.setRecordsFiltered();
 				ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_EMPTY);
-				sublog.warn(ans);
+				sublog.warn(ans.toString());
 				return ans;
 			}
 		}
 		catch(Exception e) {
 			ans.setStatus(ComStatus.QueryOwnAccStatus.ACC_DB_MISS);
-			sublog.warn(ans);
+			sublog.warn(ans.toString());
 			return ans;
 		}
 		
 		ans.setData(elist);
 		ans.setStatus(ComStatus.QueryOwnAccStatus.SUCCESS);
-		sublog.info(ans);
+		sublog.info(ans.toString());
 		return ans;
 	}
 	
