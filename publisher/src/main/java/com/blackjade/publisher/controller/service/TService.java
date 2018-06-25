@@ -11,7 +11,6 @@ import com.blackjade.publisher.apis.CPCancelAns;
 import com.blackjade.publisher.apis.CPaid;
 import com.blackjade.publisher.apis.CPayConfirm;
 import com.blackjade.publisher.apis.ComStatus;
-import com.blackjade.publisher.apis.ComStatus.CancelStatus;
 import com.blackjade.publisher.apis.ComStatus.DCancelStatus;
 import com.blackjade.publisher.apis.ComStatus.DealStatus;
 import com.blackjade.publisher.apis.ComStatus.OrderStatus;
