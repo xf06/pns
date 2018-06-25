@@ -23,7 +23,7 @@ public class CDeal {
 	}
 
 	public DealStatus reviewData() {
-		
+
 		if (!this.messageid.equals("7003"))
 			return ComStatus.DealStatus.IN_MSG_ERR;
 
@@ -41,13 +41,13 @@ public class CDeal {
 
 		if (this.poid <= 0)
 			return ComStatus.DealStatus.IN_MSG_ERR;
-		
+
 		if (this.quant <= 0)
 			return ComStatus.DealStatus.IN_QUANT_ERR;
 
 		if (this.price <= 0)
 			return ComStatus.DealStatus.IN_MSG_ERR;
-	
+
 		return ComStatus.DealStatus.SUCCESS;
 	}
 
@@ -129,6 +129,13 @@ public class CDeal {
 
 	public void setQuant(int quant) {
 		this.quant = quant;
+	}
+
+	@Override
+	public String toString() {
+		return "CDeal [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", side="
+				+ side + ", pnsoid=" + pnsoid + ", poid=" + poid + ", pnsid=" + pnsid + ", pnsgid=" + pnsgid
+				+ ", price=" + price + ", quant=" + quant + "]";
 	}
 
 }

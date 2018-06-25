@@ -49,7 +49,7 @@ import com.blackjade.subscriber.domain.PubBookRow;
 @RestController
 public class SubController {
 
-	public static final Logger sublog = LogManager.getLogger(SubController.class.getName()); 
+	private static final Logger sublog = LogManager.getLogger(SubController.class.getName()); 
 
 	@Autowired
 	private PubBookDao pubbook;

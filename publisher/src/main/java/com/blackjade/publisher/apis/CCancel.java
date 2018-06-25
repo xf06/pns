@@ -11,8 +11,8 @@ public class CCancel {
 	private UUID requestid;
 	private int clientid;
 	private UUID oid;
-	private char type;	//D and P
-	private char side;	//B and S
+	private char type; // D and P
+	private char side; // B and S
 	private UUID pnsoid; // pns order id
 	private int poid; // product owner id
 	private int pnsid;
@@ -25,11 +25,11 @@ public class CCancel {
 	}
 
 	public CancelStatus reviewData() {
-		
-		if(this.type=='P')
-			if(this.clientid!=this.poid)
+
+		if (this.type == 'P')
+			if (this.clientid != this.poid)
 				return ComStatus.CancelStatus.MSG_ERR;
-		
+
 		return ComStatus.CancelStatus.SUCCESS;
 	}
 
@@ -63,8 +63,8 @@ public class CCancel {
 
 	public void setOid(UUID oid) {
 		this.oid = oid;
-	}	
-	
+	}
+
 	public char getType() {
 		return type;
 	}
@@ -79,8 +79,8 @@ public class CCancel {
 
 	public void setSide(char side) {
 		this.side = side;
-	}	
-		
+	}
+
 	public UUID getPnsoid() {
 		return pnsoid;
 	}
@@ -127,6 +127,13 @@ public class CCancel {
 
 	public void setQuant(int quant) {
 		this.quant = quant;
+	}
+
+	@Override
+	public String toString() {
+		return "CCancel [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", oid="
+				+ oid + ", type=" + type + ", side=" + side + ", pnsoid=" + pnsoid + ", poid=" + poid + ", pnsid="
+				+ pnsid + ", pnsgid=" + pnsgid + ", price=" + price + ", quant=" + quant + "]";
 	}
 
 }

@@ -11,8 +11,8 @@ public class CPCancelAns {
 	private String messageid;
 	private UUID requestid;
 	private int clientid;
-	//private UUID oid;
-	//private int cid;
+	// private UUID oid;
+	// private int cid;
 	private char side; // <B or S>
 	private UUID pnsoid;
 	private int poid; // product owner id
@@ -21,12 +21,11 @@ public class CPCancelAns {
 	private long amount;
 	private PCancelStatus status;
 
-
 	public CPCancelAns(UUID requestid) {
 		this.messageid = "701E";
 		this.requestid = requestid;
 	}
-	
+
 	public String getMessageid() {
 		return messageid;
 	}
@@ -51,21 +50,21 @@ public class CPCancelAns {
 		this.clientid = clientid;
 	}
 
-//	public UUID getOid() {
-//		return oid;
-//	}
-//
-//	public void setOid(UUID oid) {
-//		this.oid = oid;
-//	}
-//
-//	public int getCid() {
-//		return cid;
-//	}
-//
-//	public void setCid(int cid) {
-//		this.cid = cid;
-//	}
+	// public UUID getOid() {
+	// return oid;
+	// }
+	//
+	// public void setOid(UUID oid) {
+	// this.oid = oid;
+	// }
+	//
+	// public int getCid() {
+	// return cid;
+	// }
+	//
+	// public void setCid(int cid) {
+	// this.cid = cid;
+	// }
 
 	public char getSide() {
 		return side;
@@ -121,6 +120,13 @@ public class CPCancelAns {
 
 	public void setStatus(PCancelStatus status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "CPCancelAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", side="
+				+ side + ", pnsoid=" + pnsoid + ", poid=" + poid + ", pnsid=" + pnsid + ", pnsgid=" + pnsgid
+				+ ", amount=" + amount + ", status=" + status + "]";
 	}
 
 }

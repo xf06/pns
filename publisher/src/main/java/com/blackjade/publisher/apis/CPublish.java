@@ -129,4 +129,11 @@ public class CPublish {
 		this.max = max;
 	}
 
+	@Override
+	public String toString() {
+		return "CPublish [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", side="
+				+ side + ", pnsid=" + pnsid + ", pnsgid=" + pnsgid + ", price=" + price + ", quant=" + quant + ", min="
+				+ min + ", max=" + max + "]";
+	}
+
 }

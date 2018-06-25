@@ -25,10 +25,10 @@ public class CPaid {
 	}
 
 	public PaidStatus reviewData() {
-		
+
 		if (!this.messageid.equals("7005"))
 			return ComStatus.PaidStatus.WRONG_MSGID;
-		
+
 		if (this.requestid == null)
 			return ComStatus.PaidStatus.IN_MSG_ERR;
 
@@ -40,7 +40,7 @@ public class CPaid {
 
 		if (this.cid <= 0)
 			return ComStatus.PaidStatus.IN_MSG_ERR;
-		
+
 		if (('S' != this.side) && ('B' != this.side))
 			return ComStatus.PaidStatus.IN_MSG_ERR;
 
@@ -163,6 +163,13 @@ public class CPaid {
 
 	public void setQuant(int quant) {
 		this.quant = quant;
+	}
+
+	@Override
+	public String toString() {
+		return "CPaid [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", oid=" + oid
+				+ ", cid=" + cid + ", side=" + side + ", pnsoid=" + pnsoid + ", poid=" + poid + ", pnsid=" + pnsid
+				+ ", pnsgid=" + pnsgid + ", price=" + price + ", quant=" + quant + "]";
 	}
 
 }

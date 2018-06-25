@@ -2,6 +2,8 @@ package com.blackjade.publisher.controller;
 
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,11 +49,15 @@ public class PubController {
 	@Autowired
 	private TService tsv;
 	
+	private static final Logger publog = LogManager.getLogger(PubController.class.getName());
+	
 	// Publish
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
 	@ResponseBody
 	public CPublishAns cPublish(@RequestBody CPublish pub) {
 
+		publog.info(pub.toString());
+		
 		PublishStatus st = pub.reviewData();
 
 		UUID oid = UUID.randomUUID();//####### oid created

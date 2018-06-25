@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
+
 	<Properties>
 		<Property name="LOG_PATTERN">
 			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
@@ -12,7 +13,7 @@
 		</Console>
 
 		<!-- Rolling File Appender -->
-		<RollingFile name="FileAppender" fileName="logs/subscriber-alpha.log"
+		<RollingFile name="FileAppender" fileName="logs/publisher-alpha.log"
 			filePattern="logs/log4j2-demo-%d{yyyy-MM-dd}-%i.log">
 			<PatternLayout>
 				<Pattern>${LOG_PATTERN}</Pattern>
@@ -26,14 +27,18 @@
 	</Appenders>
 
 	<Loggers>
-		<AsyncLogger name="com.blackjade.subscriber" level="debug" additivity="false">
+
+		<AsyncLogger name="com.blackjade.publisher" level="debug"
+			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
 		</AsyncLogger>
 
 		<Root level="info">
 			<AppenderRef ref="ConsoleAppender" />
-			<!-- <AppenderRef ref="FileAppender" /> -->
+			<AppenderRef ref="FileAppender" />
 		</Root>
+
 	</Loggers>
+
 </Configuration>

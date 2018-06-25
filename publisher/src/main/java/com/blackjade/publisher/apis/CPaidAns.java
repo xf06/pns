@@ -126,4 +126,11 @@ public class CPaidAns {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "CPaidAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid + ", oid="
+				+ oid + ", cid=" + cid + ", side=" + side + ", pnsoid=" + pnsoid + ", pnsid=" + pnsid + ", pnsgid="
+				+ pnsgid + ", price=" + price + ", quant=" + quant + ", status=" + status + "]";
+	}
+
 }
