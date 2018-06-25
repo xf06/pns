@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blackjade.publisher.apis.CCancel;
-import com.blackjade.publisher.apis.CCancelAns;
 import com.blackjade.publisher.apis.CDCancel;
 import com.blackjade.publisher.apis.CDCancelAns;
 import com.blackjade.publisher.apis.CDeal;
@@ -292,49 +290,6 @@ public class PubController {
 		publog.info(ans.toString());
 		return ans;
 	}
-	
-	// Cancel
-	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
-	@ResponseBody
-	public CCancelAns cCancel(@RequestBody CCancel can) {
-		// check input 
-		ComStatus.CancelStatus st = can.reviewData();
-		
-		// construct ans
-		CCancelAns ans = new CCancelAns(can.getRequestid());
-		ans.setOid(can.getOid());
-		//...
-		if(st!=ComStatus.CancelStatus.SUCCESS) {
-			ans.setStatus(st);
-			return ans;
-		}
-				
-		try{
-			
-			Integer amnt = new Integer(0);
-			st = this.tsv.updateOrdPnS(can, amnt);
-			if(st!=ComStatus.CancelStatus.SUCCESS) {
-				ans.setStatus(st);
-				return ans;
-			}
-			
-			ans.setStatus(st);
-			ans.setQuant(amnt.intValue());
-			return ans;
-		}
-		catch(CapiException e) {
-			ans.setStatus(ComStatus.CancelStatus.valueOf(e.getMessage()));
-			return ans;
-		}
-		catch(Exception e) {			
-			ans.setStatus(ComStatus.CancelStatus.UNKNOWN);
-			return ans;
-		}
-				
-		// report error if occur		
-		// return ans;
-	}
-	
 	
 	// CDCancel
 	@RequestMapping(value = "/dcancel", method = RequestMethod.POST)
