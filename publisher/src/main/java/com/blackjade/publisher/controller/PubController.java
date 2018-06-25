@@ -79,6 +79,7 @@ public class PubController {
 
 		if (st != ComStatus.PublishStatus.SUCCESS) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 
@@ -109,15 +110,18 @@ public class PubController {
 		}
 		catch(Exception e) {
 			ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
 		if(retcode==0) {
 			ans.setStatus(ComStatus.PublishStatus.DATABASE_ERR);
+			publog.warn(ans.toString());
 			return ans;
 		}
 			
 		ans.setStatus(ComStatus.PublishStatus.SUCCESS);
+		publog.info(ans.toString());
 		return ans;
 	}
 	
@@ -125,6 +129,9 @@ public class PubController {
 	@RequestMapping(value = "/deal", method = RequestMethod.POST)
 	@ResponseBody
 	public CDealAns cDeal(@RequestBody CDeal deal) {
+		
+		publog.info(deal.toString());
+		
 		// check input errors
 		DealStatus st = deal.reviewData();
 		UUID oid = UUID.randomUUID();
@@ -147,6 +154,7 @@ public class PubController {
 		
 		if(st!=ComStatus.DealStatus.SUCCESS) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -171,14 +179,14 @@ public class PubController {
 		ans.setStatus(st);
 
 		switch(st) {
-			case SUCCESS: 			ordrow.setStatus(ComStatus.OrderStatus.DEALING.toString()); break; 
-			case PNS_STATUS_FINAL:	ordrow.setStatus(ComStatus.OrderStatus.REJECT_DONE.toString()); break;
-			case PNS_STATUS_LOCKED:	ordrow.setStatus(ComStatus.OrderStatus.REJECT_LOCK.toString()); break;
-			default:				ordrow.setStatus(ComStatus.OrderStatus.ERROR.toString());
+			case SUCCESS: 			ordrow.setStatus(ComStatus.OrderStatus.DEALING.toString()); publog.info(ans.toString()); break; 
+			case PNS_STATUS_FINAL:	ordrow.setStatus(ComStatus.OrderStatus.REJECT_DONE.toString()); publog.warn(ans.toString()); break;
+			case PNS_STATUS_LOCKED:	ordrow.setStatus(ComStatus.OrderStatus.REJECT_LOCK.toString()); publog.warn(ans.toString()); break;
+			default:				ordrow.setStatus(ComStatus.OrderStatus.ERROR.toString()); publog.warn(ans.toString());
 		}
 		
 		this.ord.insertOrder(ordrow);
-				
+
 		return ans;
 	}
 	
@@ -186,6 +194,9 @@ public class PubController {
 	@RequestMapping(value = "/paid", method = RequestMethod.POST)
 	@ResponseBody
 	public CPaidAns cPaid(@RequestBody CPaid paid) {
+		
+		publog.info(paid.toString());
+		
 		// check input 
 		ComStatus.PaidStatus st = paid.reviewData();
 		
@@ -203,6 +214,7 @@ public class PubController {
 		// report error if occur
 		if(st!=ComStatus.PaidStatus.SUCCESS) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 				
@@ -212,7 +224,8 @@ public class PubController {
 		// no need to update PnS for this
 		
 		st = this.tsv.updateOrd(paid);
-		ans.setStatus(st);
+		ans.setStatus(st);		
+		publog.info(ans.toString());
 		
 		return ans;
 	}
@@ -222,6 +235,8 @@ public class PubController {
 	@ResponseBody
 	public CPayConfirmAns cPayConfirm(@RequestBody CPayConfirm paycon) {
 		// check input 
+		publog.info(paycon.toString());
+		
 		ComStatus.PayConfirmStatus st = paycon.reviewData();
 		
 		// construct ans
@@ -243,6 +258,7 @@ public class PubController {
 		
 		if(st!=ComStatus.PayConfirmStatus.SUCCESS) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -253,15 +269,18 @@ public class PubController {
 		}
 		catch(CapiException e) {
 			ans.setStatus(ComStatus.PayConfirmStatus.valueOf(e.getMessage()));
+			publog.warn(ans.toString());
 			return ans;
 		}
 		catch(Exception e) {
 			ans.setStatus(ComStatus.PayConfirmStatus.ORD_ERR);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
 		if(st!=ComStatus.PayConfirmStatus.SUCCESS) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}		
 		
@@ -270,6 +289,7 @@ public class PubController {
 		// *************************************************** //
 		
 		ans.setStatus(st);
+		publog.info(ans.toString());
 		return ans;
 	}
 	
@@ -320,7 +340,9 @@ public class PubController {
 	@RequestMapping(value = "/dcancel", method = RequestMethod.POST)
 	@ResponseBody
 	public CDCancelAns cDCancel(@RequestBody CDCancel can) {
-		
+				
+		publog.info(can.toString());
+
 		DCancelStatus st = can.reviewData();			
 		CDCancelAns ans =  new CDCancelAns(can.getRequestid());
 		
@@ -339,6 +361,7 @@ public class PubController {
 		
 		if(ComStatus.DCancelStatus.SUCCESS!=st) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -348,18 +371,22 @@ public class PubController {
 			
 			if(ComStatus.DCancelStatus.SUCCESS!=st) {
 				ans.setStatus(st);
+				publog.warn(ans.toString());
 				return ans;
 			}
 			
-			ans.setStatus(st);			
+			ans.setStatus(st);
+			publog.info(ans.toString());
 			return ans; // success return
 		}
 		catch(CapiException e) {
 			ans.setStatus(ComStatus.DCancelStatus.valueOf(e.getMessage()));
+			publog.warn(ans.toString());
 			return ans;
 		}
 		catch(Exception e) {			
 			ans.setStatus(ComStatus.DCancelStatus.UNKNOWN);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -369,6 +396,8 @@ public class PubController {
 	@RequestMapping(value = "/pcancel", method = RequestMethod.POST)
 	@ResponseBody
 	public CPCancelAns cPCancel(@RequestBody CPCancel can) {
+		
+		publog.info(can.toString());
 		
 		PCancelStatus st =  can.reviewData();
 		CPCancelAns ans = new CPCancelAns(can.getRequestid());
@@ -384,6 +413,7 @@ public class PubController {
 		
 		if(ComStatus.PCancelStatus.SUCCESS!=st) {
 			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
@@ -393,18 +423,22 @@ public class PubController {
 			
 			if(ComStatus.PCancelStatus.SUCCESS!=st) {
 				ans.setStatus(st);
+				publog.warn(ans.toString());
 				return ans;
 			}
 			
-			ans.setStatus(st);			
+			ans.setStatus(st);
+			publog.warn(ans.toString());
 			return ans; // success return
 		}
 		catch(CapiException e) {
 			ans.setStatus(ComStatus.PCancelStatus.valueOf(e.getMessage()));
+			publog.warn(ans.toString());
 			return ans;
 		}
 		catch(Exception e) {			
 			ans.setStatus(ComStatus.PCancelStatus.UNKNOWN);
+			publog.warn(ans.toString());
 			return ans;
 		}
 		
