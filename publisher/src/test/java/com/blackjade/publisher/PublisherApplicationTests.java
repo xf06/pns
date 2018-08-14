@@ -30,69 +30,74 @@ public class PublisherApplicationTests {
 		restTemplate = new RestTemplate();
 	}	
 	
-	@Test
-	public void postPublish() {
-		String url = "http://localhost:" + port + "/publish";
-		CPublish pub = new CPublish();
+	@Test 
+	public void temp() {
 		
-		pub.setRequestid(UUID.randomUUID());
-		pub.setClientid(470210);	// client 12345
-		pub.setSide('S');		// sell// only 'B' and 'S'
-		pub.setPnsid(1);		// BTC
-		pub.setPnsgid(8);		// crypto currency group, 7 token group
-		
-		pub.setPrice(57000);	// RMB  
-		pub.setQuant(1000000);	// 1.0 BTC 
-		pub.setMin(5000);		// min 5000 RMB   
-		pub.setMax(10000);		// max 10000 RMB
-				
-		CPublishAns result = restTemplate.postForObject(url, pub, CPublishAns.class);
-		
-		// a lot of assertions should be done		
-		assertEquals(true, (result.getStatus()==ComStatus.PublishStatus.SUCCESS));  
 	}
 	
-	@Test
-	public void postDeal() {
-		String url = "http://localhost:" + port + "/publish";
-		CPublish pub = new CPublish();
+//	@Test
+//	public void postPublish() {
+//		String url = "http://localhost:" + port + "/publish";
+//		CPublish pub = new CPublish();
+//		
+//		pub.setRequestid(UUID.randomUUID());
+//		pub.setClientid(470210);	// client 12345
+//		pub.setSide('S');		// sell// only 'B' and 'S'
+//		pub.setPnsid(1);		// BTC
+//		pub.setPnsgid(8);		// crypto currency group, 7 token group
+//		
+//		pub.setPrice(57000);	// RMB  
+//		pub.setQuant(1000000);	// 1.0 BTC 
+//		pub.setMin(5000);		// min 5000 RMB   
+//		pub.setMax(10000);		// max 10000 RMB
+//				
+//		CPublishAns result = restTemplate.postForObject(url, pub, CPublishAns.class);
+//		
+//		// a lot of assertions should be done		
+//		assertEquals(true, (result.getStatus()==ComStatus.PublishStatus.SUCCESS));  
+//	}
+//	
+//	@Test
+//	public void postDeal() {
+//		String url = "http://localhost:" + port + "/publish";
+//		CPublish pub = new CPublish();
+//		
+//		pub.setRequestid(UUID.randomUUID());
+//		pub.setClientid(470210);	// client 12345
+//		pub.setSide('S');		// sell// only 'B' and 'S'
+//		pub.setPnsid(1);		// BTC
+//		pub.setPnsgid(8);		// crypto currency group, 7 token group
+//		
+//		pub.setPrice(60000);	// RMB  
+//		pub.setQuant(1000000);	// 1.0 BTC 
+//		pub.setMin(5000);		// min 5000 RMB   
+//		pub.setMax(10000);		// max 10000 RMB
+//				
+//		CPublishAns result = restTemplate.postForObject(url, pub, CPublishAns.class);
+//		
+//		// a lot of assertions should be done		
+//		assertEquals(true, (result.getStatus()==ComStatus.PublishStatus.SUCCESS));
+//		
+//		// then deal this order
+//		url = "http://localhost:" + port + "/deal";
+//		CDeal deal = new CDeal();
+//		
+//		deal.setRequestid(UUID.randomUUID());
+//		deal.setClientid(470211);
+//		deal.setSide('B');
+//		deal.setPnsid(1);
+//		deal.setPnsgid(8);
+//		deal.setPoid(result.getClientid());
+//		deal.setPnsoid(result.getOid());
+//		
+//		deal.setPrice(60000);
+//		deal.setQuant(5000);
+//		
+//		CDealAns dealans = restTemplate.postForObject(url, deal, CDealAns.class);
+//		// some assertions need to be done
+//		assertEquals(true, (dealans.getStatus()==ComStatus.DealStatus.SUCCESS));
 		
-		pub.setRequestid(UUID.randomUUID());
-		pub.setClientid(470210);	// client 12345
-		pub.setSide('S');		// sell// only 'B' and 'S'
-		pub.setPnsid(1);		// BTC
-		pub.setPnsgid(8);		// crypto currency group, 7 token group
-		
-		pub.setPrice(60000);	// RMB  
-		pub.setQuant(1000000);	// 1.0 BTC 
-		pub.setMin(5000);		// min 5000 RMB   
-		pub.setMax(10000);		// max 10000 RMB
-				
-		CPublishAns result = restTemplate.postForObject(url, pub, CPublishAns.class);
-		
-		// a lot of assertions should be done		
-		assertEquals(true, (result.getStatus()==ComStatus.PublishStatus.SUCCESS));
-		
-		// then deal this order
-		url = "http://localhost:" + port + "/deal";
-		CDeal deal = new CDeal();
-		
-		deal.setRequestid(UUID.randomUUID());
-		deal.setClientid(470211);
-		deal.setSide('B');
-		deal.setPnsid(1);
-		deal.setPnsgid(8);
-		deal.setPoid(result.getClientid());
-		deal.setPnsoid(result.getOid());
-		
-		deal.setPrice(60000);
-		deal.setQuant(5000);
-		
-		CDealAns dealans = restTemplate.postForObject(url, deal, CDealAns.class);
-		// some assertions need to be done
-		assertEquals(true, (dealans.getStatus()==ComStatus.DealStatus.SUCCESS));
-		
-	}
+//	}
 	
 	
 
