@@ -19,8 +19,8 @@ import com.blackjade.subscriber.apis.CQueryAllOrdSent;
 import com.blackjade.subscriber.apis.CQueryAllOrdSentAns;
 import com.blackjade.subscriber.apis.CQueryOwnAccPage;
 import com.blackjade.subscriber.apis.CQueryOwnAccPageAns;
-import com.blackjade.subscriber.apis.CQueryOwnOrd;
-import com.blackjade.subscriber.apis.CQueryOwnOrdAns;
+//import com.blackjade.subscriber.apis.CQueryOwnOrd;
+//import com.blackjade.subscriber.apis.CQueryOwnOrdAns;
 import com.blackjade.subscriber.apis.CQueryOwnPage;
 import com.blackjade.subscriber.apis.CQueryOwnPageAns;
 import com.blackjade.subscriber.apis.CQueryPnSOrder;
@@ -273,53 +273,53 @@ public class SubController {
 		sublog.info(ans.toString());
 		return ans;
 	}
-
-	@RequestMapping(value = "/ownord", method = RequestMethod.POST)
-	@ResponseBody
-	public CQueryOwnOrdAns QueryOwnOrd(@RequestBody CQueryOwnOrd qord) {
-
-		sublog.info(qord.toString());
-		
-		// check input
-		QueryOwnOrdStatus st = qord.reviewData();
-
-		// construct ans
-		CQueryOwnOrdAns ans = new CQueryOwnOrdAns(qord.getRequestid());
-		ans.setPnsgid(qord.getPnsgid());
-		ans.setPnsid(qord.getPnsid());
-		ans.setPnsoid(qord.getPnsoid());
-		ans.setPoid(qord.getPoid());
-		ans.setSide(qord.getSide());
-
-		if (st != ComStatus.QueryOwnOrdStatus.SUCCESS) {
-			ans.setStatus(ComStatus.QueryOwnOrdStatus.INMSG_ERR);
-			sublog.warn(ans.toString());
-			return ans;
-		}
-
-		// get obr from database
-		OrdBookRow obr = null;
-		try {
-			obr = this.ordbook.selectOwnOrd(qord.getOid().toString(), qord.getCid(), qord.getPnsoid().toString(),
-					qord.getPoid(), qord.getPnsgid(), qord.getPnsid(), qord.getSide());
-
-			if (obr == null) {
-				ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_EMPTY);
-				sublog.warn(ans.toString());
-				return ans;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
-			sublog.warn(ans.toString());
-			return ans;
-		}
-
-		ans.setOrd(obr);
-		ans.setStatus(ComStatus.QueryOwnOrdStatus.SUCCESS);
-		sublog.info(ans.toString());
-		return ans;
-	}
+//
+//	@RequestMapping(value = "/ownord", method = RequestMethod.POST)
+//	@ResponseBody
+//	public CQueryOwnOrdAns QueryOwnOrd(@RequestBody CQueryOwnOrd qord) {
+//
+//		sublog.info(qord.toString());
+//		
+//		// check input
+//		QueryOwnOrdStatus st = qord.reviewData();
+//
+//		// construct ans
+//		CQueryOwnOrdAns ans = new CQueryOwnOrdAns(qord.getRequestid());
+//		ans.setPnsgid(qord.getPnsgid());
+//		ans.setPnsid(qord.getPnsid());
+//		ans.setPnsoid(qord.getPnsoid());
+//		ans.setPoid(qord.getPoid());
+//		ans.setSide(qord.getSide());
+//
+//		if (st != ComStatus.QueryOwnOrdStatus.SUCCESS) {
+//			ans.setStatus(ComStatus.QueryOwnOrdStatus.INMSG_ERR);
+//			sublog.warn(ans.toString());
+//			return ans;
+//		}
+//
+//		// get obr from database
+//		OrdBookRow obr = null;
+//		try {
+//			obr = this.ordbook.selectOwnOrd(qord.getOid().toString(), qord.getCid(), qord.getPnsoid().toString(),
+//					qord.getPoid(), qord.getPnsgid(), qord.getPnsid(), qord.getSide());
+//
+//			if (obr == null) {
+//				ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_EMPTY);
+//				sublog.warn(ans.toString());
+//				return ans;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
+//			sublog.warn(ans.toString());
+//			return ans;
+//		}
+//
+//		ans.setOrd(obr);
+//		ans.setStatus(ComStatus.QueryOwnOrdStatus.SUCCESS);
+//		sublog.info(ans.toString());
+//		return ans;
+//	}
 
 	@RequestMapping(value = "/allordsent", method = RequestMethod.POST)
 	@ResponseBody
