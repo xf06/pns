@@ -334,7 +334,7 @@ public class SubController {
 		CQueryAllOrdSentAns ans = new CQueryAllOrdSentAns(qaos.getRequestid());
 		ans.setPnsgid(qaos.getPnsgid());
 		ans.setPnsid(qaos.getPnsid());
-		ans.setCid(qaos.getCid());
+		ans.setClientid(qaos.getClientid());
 		ans.setStart(qaos.getStart());
 		ans.setLength(10);
 
@@ -347,7 +347,7 @@ public class SubController {
 		// select the number of ord that sent
 		int num = 0;
 		try {
-			num = this.ordbook.selectNumAllOrdSent(qaos.getCid(), qaos.getPnsgid(), qaos.getPnsid());
+			num = this.ordbook.selectNumAllOrdSent(qaos.getClientid(), qaos.getPnsgid(), qaos.getPnsid());
 			if (num == 0) {
 				ans.setRecordsFiltered(num);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_EMPTY);
@@ -364,7 +364,7 @@ public class SubController {
 		// select the list of ord that sent
 		List<AllOrdSentRow> elist = null;
 		try {
-			elist = this.ordbook.selectAllOrdSent(qaos.getCid(), qaos.getPnsgid(), qaos.getPnsid(), qaos.getStart());
+			elist = this.ordbook.selectAllOrdSent(qaos.getClientid(), qaos.getPnsgid(), qaos.getPnsid(), qaos.getStart());
 			if (elist == null) {
 				ans.setRecordsFiltered(0);
 				ans.setStatus(ComStatus.QueryAllOrdSentStatus.ORD_DB_MISS);

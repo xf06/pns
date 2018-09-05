@@ -10,7 +10,7 @@ public class CQueryAllOrdSent {
 
 	private String messageid;
 	private UUID requestid;
-	private int cid;
+	private int clientid;
 	private int pnsgid;
 	private int pnsid;
 	private int start;
@@ -42,13 +42,13 @@ public class CQueryAllOrdSent {
 	public void setRequestid(UUID requestid) {
 		this.requestid = requestid;
 	}
-
-	public int getCid() {
-		return cid;
+	
+	public int getClientid() {
+		return clientid;
 	}
 
-	public void setCid(int cid) {
-		this.cid = cid;
+	public void setClientid(int clientid) {
+		this.clientid = clientid;
 	}
 
 	public int getPnsgid() {
@@ -85,8 +85,8 @@ public class CQueryAllOrdSent {
 
 	@Override
 	public String toString() {
-		return "CQueryAllOrdSent [messageid=" + messageid + ", requestid=" + requestid + ", cid=" + cid + ", pnsgid="
-				+ pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + "]";
+		return "CQueryAllOrdSent [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + "]";
 	}
 	
 }

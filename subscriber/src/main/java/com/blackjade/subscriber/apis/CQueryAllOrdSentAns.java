@@ -12,16 +12,15 @@ public class CQueryAllOrdSentAns {
 
 	private String messageid;
 	private UUID requestid;
-	private int cid;
+	private int clientid;
 	private int pnsgid;
 	private int pnsid;
-	private QueryAllOrdSentStatus status;
-
 	private int start;
 	private int length;
-
-	int recordsFiltered;
-	List<AllOrdSentRow> data;
+	private QueryAllOrdSentStatus status;
+	
+	private int recordsFiltered;
+	private List<AllOrdSentRow> data;
 
 	public CQueryAllOrdSentAns(UUID requestid) {
 		this.requestid = requestid;
@@ -43,13 +42,13 @@ public class CQueryAllOrdSentAns {
 	public void setRequestid(UUID requestid) {
 		this.requestid = requestid;
 	}
-
-	public int getCid() {
-		return cid;
+	
+	public int getClientid() {
+		return clientid;
 	}
 
-	public void setCid(int cid) {
-		this.cid = cid;
+	public void setClientid(int clientid) {
+		this.clientid = clientid;
 	}
 
 	public int getPnsgid() {
@@ -110,10 +109,9 @@ public class CQueryAllOrdSentAns {
 
 	@Override
 	public String toString() {
-		return "CQueryAllOrdSentAns [messageid=" + messageid + ", requestid=" + requestid + ", cid=" + cid + ", pnsgid="
-				+ pnsgid + ", pnsid=" + pnsid + ", status=" + status + ", start=" + start + ", length=" + length
-				+ ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
+		return "CQueryAllOrdSentAns [messageid=" + messageid + ", requestid=" + requestid + ", clientid=" + clientid
+				+ ", pnsgid=" + pnsgid + ", pnsid=" + pnsid + ", start=" + start + ", length=" + length + ", status="
+				+ status + ", recordsFiltered=" + recordsFiltered + ", data=" + data + "]";
 	}
-
 	
 }
