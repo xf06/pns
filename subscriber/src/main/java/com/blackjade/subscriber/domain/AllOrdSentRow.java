@@ -6,6 +6,7 @@ public class AllOrdSentRow {
 	private String oid;
 	private String pnsoid;
 	private int poid;
+	private String poname;// new data field
 	private char side;
 	private long price;
 	private long quant;
@@ -41,6 +42,14 @@ public class AllOrdSentRow {
 
 	public void setPoid(int poid) {
 		this.poid = poid;
+	}
+
+	public String getPoname() {
+		return poname;
+	}
+
+	public void setPoname(String poname) {
+		this.poname = poname;
 	}
 
 	public char getSide() {

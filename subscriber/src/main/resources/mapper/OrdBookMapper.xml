@@ -41,8 +41,10 @@
 	</select>
 
 	<select id="selectAllOrdSent" resultType="com.blackjade.subscriber.domain.AllOrdSentRow">
-		SELECT TIMESTAMP,OID,PNSOID,POID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
-		a.CID=#{cid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;
+		SELECT TIMESTAMP,OID,PNSOID,POID,customer.USERNAME PONAME,SIDE,PRICE,QUANT,STATUS FROM pns.orders a 
+		INNER JOIN crm.customer ON a.POID=crm.customer.ID		
+		WHERE
+		a.CID=#{cid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;		
 	</select>
 		
 	<select id="selectNumAllOrdRecv" resultType="int">
@@ -52,9 +54,11 @@
 	</select>
 
 	<select id="selectAllOrdRecv" resultType="com.blackjade.subscriber.domain.AllOrdRecvRow">
-		SELECT TIMESTAMP,OID,CID,PNSOID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a WHERE
-		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;
+		SELECT TIMESTAMP,OID,CID,customer.USERNAME CNAME,PNSOID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a 
+		INNER JOIN crm.customer ON a.CID=crm.customer.ID
+		WHERE
+		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;		
 	</select>
-		
+	
 </mapper>
 
