@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.blackjade.subscriber.domain.AllOrdRecvRow;
 import com.blackjade.subscriber.domain.AllOrdSentRow;
 import com.blackjade.subscriber.domain.OrdBookRow;
+import com.blackjade.subscriber.domain.OwnSingleOrdRow;
 
 @Component
 public interface OrdBookDao {
@@ -42,4 +43,8 @@ public interface OrdBookDao {
 	public List<AllOrdRecvRow> selectAllOrdRecv(@Param(value = "poid") int poid, @Param(value = "pnsgid") int pnsgid,
 			@Param(value = "pnsid") int pnsid, @Param(value = "num") int num);// num = pagenum*10
 
+	// select one single own order
+	public OwnSingleOrdRow selectOwnSingleOrdRow(@Param(value = "oid") String oid, @Param(value = "cid") int cid, 
+			@Param(value = "pnsgid") int pnsgid, @Param(value = "pnsid") int pnsid);
+	
 }

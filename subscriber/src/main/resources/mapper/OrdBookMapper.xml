@@ -60,5 +60,12 @@
 		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;		
 	</select>
 	
+	<select id="selectOwnSingleOrdRow" resultType="com.blackjade.subscriber.domain.OwnSingleOrdRow">
+		SELECT TIMESTAMP,OID,CID,customer.USERNAME CNAME,PNSOID,SIDE,PRICE,QUANT,STATUS FROM pns.orders a 
+		INNER JOIN crm.customer ON a.CID=crm.customer.ID
+		WHERE
+		a.POID=#{poid} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} ORDER BY a.TIMESTAMP ASC LIMIT #{num}, 10;		
+	</select>
+		
 </mapper>
 

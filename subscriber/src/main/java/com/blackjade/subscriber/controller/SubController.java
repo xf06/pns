@@ -2,8 +2,6 @@ package com.blackjade.subscriber.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,8 @@ import com.blackjade.subscriber.apis.CQueryPnSOrder;
 import com.blackjade.subscriber.apis.CQueryPnSOrderAns;
 import com.blackjade.subscriber.apis.CQueryPnSPage;
 import com.blackjade.subscriber.apis.CQueryPnSPageAns;
+import com.blackjade.subscriber.apis.CQuerySingleOrd;
+import com.blackjade.subscriber.apis.CQuerySingleOrdAns;
 import com.blackjade.subscriber.apis.ComStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdRecvStatus;
 import com.blackjade.subscriber.apis.ComStatus.QueryAllOrdSentStatus;
@@ -43,6 +43,7 @@ import com.blackjade.subscriber.domain.AllOrdSentRow;
 import com.blackjade.subscriber.domain.OrdBookRow;
 import com.blackjade.subscriber.domain.OwnAccRow;
 import com.blackjade.subscriber.domain.OwnBookRow;
+import com.blackjade.subscriber.domain.OwnSingleOrdRow;
 import com.blackjade.subscriber.domain.PubBookRow;
 
 
@@ -273,6 +274,46 @@ public class SubController {
 		sublog.info(ans.toString());
 		return ans;
 	}
+	
+	@RequestMapping(value = "/ownsingleorder", method = RequestMethod.POST)
+	@ResponseBody
+	public CQuerySingleOrdAns QueryOwnSingleOrd(@RequestBody CQuerySingleOrd qord) {
+		
+		sublog.info(qord.toString());
+		
+		// check input
+		QueryOwnOrdStatus st = qord.reviewData();
+		CQuerySingleOrdAns ans = new CQuerySingleOrdAns(qord.getRequestid());
+		
+		ans.setClientid(qord.getClientid());
+		ans.setOid(qord.getOid());
+		ans.setPnsgid(qord.getPnsgid());
+		ans.setPnsid(qord.getPnsid());
+		
+		if(ComStatus.QueryOwnOrdStatus.SUCCESS!=st) {
+			ans.setStatus(st);
+			return ans;
+		}
+		
+		OwnSingleOrdRow row = null;
+		try {
+			row = this.ordbook.selectOwnSingleOrdRow(qord.getOid().toString(), qord.getClientid(), qord.getPnsgid(), qord.getPnsid());
+		}
+		catch(Exception e) {
+			ans.setStatus(ComStatus.QueryOwnOrdStatus.ORD_DB_MISS);
+			return ans;
+		}
+				
+		if(row!=null) {
+			ans.setOrdrow(row);
+			ans.setStatus(ComStatus.QueryOwnOrdStatus.SUCCESS);
+			return ans;
+		}
+						
+		sublog.info(ans.toString());
+		return ans;
+	}
+	
 //
 //	@RequestMapping(value = "/ownord", method = RequestMethod.POST)
 //	@ResponseBody
@@ -323,6 +364,7 @@ public class SubController {
 
 	@RequestMapping(value = "/allordsent", method = RequestMethod.POST)
 	@ResponseBody
+
 	public CQueryAllOrdSentAns QueryAllOrdSent(@RequestBody CQueryAllOrdSent qaos) {
 		
 		sublog.info(qaos.toString());
