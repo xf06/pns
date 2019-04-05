@@ -108,7 +108,18 @@ public class SubController {
 		List<PubBookRow> elist = null;
 
 		try {
-			elist = this.pubbook.selectPubBookRow(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
+			if('S'== qpns.getSide()) {
+				elist = this.pubbook.selectSellPubBookRow(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
+			}
+			else {
+				if('B'== qpns.getSide()){
+					elist = this.pubbook.selectBuyPubBookRow(qpns.getPnsgid(), qpns.getPnsid(), qpns.getSide(), qpns.getStart());
+				}else {
+					ans.setStatus(ComStatus.QueryPnSStatus.INMSG_ERR);
+					sublog.warn(ans.toString());
+					return ans;
+				}
+			}
 			if (elist == null) {
 				ans.setStatus(ComStatus.QueryPnSStatus.PNS_EMPTY);
 				sublog.warn(ans.toString());

@@ -10,7 +10,8 @@
 		('PUBLISHED', 'HALF_TRADED')
 	</select>
 
-	<select id="selectPubBookRow" resultType="com.blackjade.subscriber.domain.PubBookRow">
+<!-- 	update this one  -->
+	<select id="selectSellPubBookRow" resultType="com.blackjade.subscriber.domain.PubBookRow">
 		SELECT a.OID PNSOID,
 		a.POID,customer.USERNAME PONAME, a.PRICE, a.QUANT,
 		a.NET, a.MAX, a.MIN
@@ -22,6 +23,22 @@
 		('PUBLISHED', 'HALF_TRADED') ORDER BY a.PRICE ASC LIMIT
 		#{num}, 10
 	</select>
+
+	<select id="selectBuyPubBookRow" resultType="com.blackjade.subscriber.domain.PubBookRow">
+		SELECT a.OID PNSOID,
+		a.POID,customer.USERNAME PONAME, a.PRICE, a.QUANT,
+		a.NET, a.MAX, a.MIN
+		FROM pns.pns a INNER JOIN crm.customer ON
+		a.POID=crm.customer.ID
+		WHERE
+		a.SIDE=#{side} AND a.PNSGID=#{pnsgid} AND a.PNSID=#{pnsid} AND
+		a.STATUS IN
+		('PUBLISHED', 'HALF_TRADED') ORDER BY a.PRICE DESC LIMIT
+		#{num}, 10
+	</select>
+
+
+
 
 	<select id="selectOwnNumPns" resultType="int">
 		SELECT COUNT(*) FROM
